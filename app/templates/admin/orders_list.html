@@ -1,0 +1,27 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin • Pedidos</h1>
+<table>
+<tr><th>ID</th><th>Status</th><th>Total</th><th>Cliente</th><th>Ações</th></tr>
+{% for o in orders %}
+<tr>
+  <td>{{ o.id }}</td>
+  <td>{{ o.status }}</td>
+  <td>R${{ '%.2f'%(o.total_cents/100) }}</td>
+  <td>{{ o.customer_name or (o.user.name if o.user) }}</td>
+  <td>
+    <form method="post" action="{{ url_for('admin.orders_set_status', oid=o.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <select name="status">
+        <option value="pending" {% if o.status=='pending' %}selected{% endif %}>pending</option>
+        <option value="paid" {% if o.status=='paid' %}selected{% endif %}>paid</option>
+        <option value="cancelled" {% if o.status=='cancelled' %}selected{% endif %}>cancelled</option>
+      </select>
+      <button class="btn">Atualizar</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,42 @@
+
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Padaria L'Azur</title>
+    <link rel="stylesheet" href="https://unpkg.com/missing.css@1.1.0">
+    <style>
+      body { background: #0e2a47; color: #f2e8d5; }
+      .card { background: #24496e; padding: 12px; border-radius: 12px; margin: 8px; }
+      .btn { background:#2f64a1; color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; }
+      .btn:focus, .btn:hover{ filter:brightness(1.1); }
+      header, nav { display:flex; gap:16px; align-items:center; }
+      img.thumb{ width:96px; height:96px; object-fit:cover; border-radius:10px; }
+      .price { font-weight:700; }
+    </style>
+  </head>
+  <body>
+    <header style="justify-content:space-between;padding:10px 16px;">
+      <nav>
+        <a href="/" class="btn">Início</a>
+        <a href="/cardapio" class="btn">Cardápio</a>
+        <a href="/carrinho" class="btn">Carrinho</a>
+        <a href="/sobre" class="btn">Sobre nós</a>
+      </nav>
+      {% if current_user.is_authenticated and current_user.is_admin %}<a class="btn" href="/admin/">Admin</a>{% endif %}
+      <nav>
+        <a class="btn" href="/login">Entrar</a>
+        <a class="btn" href="/registrar">Criar conta</a>
+      </nav>
+    </header>
+    <main style="max-width:1000px;margin:0 auto;padding:16px;">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="card" style="background:#5a2;">{{ messages[0] }}</div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

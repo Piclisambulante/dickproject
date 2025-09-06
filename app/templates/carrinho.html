@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Carrinho</h1>
+{% if not items %}
+<p>Seu carrinho está vazio.</p>
+{% else %}
+<table>
+  <tr><th>Produto</th><th>Qtd</th><th>Total</th></tr>
+  {% for p, qty, line_total in items %}
+  <tr><td>{{ p.name }}</td><td>{{ qty }}</td><td>R${{ '%.2f'%(line_total/100) }}</td></tr>
+  {% endfor %}
+  <tr><td colspan="2"><b>Produtos</b></td><td><b>R${{ '%.2f'%(total_cents/100) }}</b></td></tr>
+</table>
+
+<hr/>
+<form action="/carrinho/identificacao" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Nome: <input name="name" value="{{ name or '' }}" required></label>
+  <label>CEP: <input name="cep" value="{{ cep or '' }}" required></label>
+  <button class="btn" type="submit">Prosseguir para pagamento</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Resumo do Pedido</h1>
+<ul>
+  {% for p, qty, line_total in items %}
+    <li>{{ p.name }} x{{ qty }} — R${{ '%.2f'%(line_total/100) }}</li>
+  {% endfor %}
+</ul>
+<p><b>Total a pagar:</b> R${{ '%.2f'%(total_cents/100) }}</p>
+<form action="/checkout/criar-pedido" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button class="btn" type="submit">Gerar PIX</button>
+</form>
+{% endblock %}

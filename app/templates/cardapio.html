@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Cardápio</h1>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
+  {% for p in products %}
+  <div class="card">
+    <img class="thumb" src="{{ p.image_url }}" alt="{{ p.name }}"/>
+    <h3>{{ p.name }}</h3>
+    <p>{{ p.description }}</p>
+    <p class="price">R${{ '%.2f'%(p.price_cents/100) }}</p>
+    <form action="/cart/add" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="product_id" value="{{ p.id }}"/>
+      <input type="number" name="quantity" min="1" value="1"/>
+      <button class="btn" type="submit">Adicionar</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

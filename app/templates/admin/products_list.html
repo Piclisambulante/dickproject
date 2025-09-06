@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin • Produtos</h1>
+<a class="btn" href="{{ url_for('admin.products_new') }}">Novo produto</a>
+<table>
+<tr><th>ID</th><th>Nome</th><th>Preço</th><th>Ativo</th><th>Ações</th></tr>
+{% for p in products %}
+<tr>
+  <td>{{ p.id }}</td>
+  <td>{{ p.name }}</td>
+  <td>R${{ '%.2f'%(p.price_cents/100) }}</td>
+  <td>{{ 'Sim' if p.is_active else 'Não' }}</td>
+  <td>
+    <a class="btn" href="{{ url_for('admin.products_edit', pid=p.id) }}">Editar</a>
+    <form style="display:inline" method="post" action="{{ url_for('admin.products_delete', pid=p.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn" onclick="return confirm('Remover produto?')">Excluir</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

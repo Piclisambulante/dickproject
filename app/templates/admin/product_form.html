@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin • {{ 'Editar' if product else 'Novo' }} Produto</h1>
+<form method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Nome <input name="name" value="{{ product.name if product }}"></label>
+  <label>Preço (centavos) <input name="price_cents" type="number" value="{{ product.price_cents if product else 0 }}"></label>
+  <label>Estoque <input name="stock" type="number" value="{{ product.stock if product else 0 }}"></label>
+  <label>Descrição <textarea name="description">{{ product.description if product }}</textarea></label>
+  <label>Imagem <input type="file" name="image"></label>
+  <label><input type="checkbox" name="is_active" {% if product and product.is_active %}checked{% endif %}> Ativo</label>
+  <button class="btn" type="submit">Salvar</button>
+  <a class="btn" href="{{ url_for('admin.products_list') }}">Voltar</a>
+</form>
+{% endblock %}

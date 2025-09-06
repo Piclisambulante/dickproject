@@ -1,0 +1,10 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Histórico (últimos 15 dias)</h1>
+<ul>
+{% for o in orders %}
+  <li>Pedido #{{ o.id }} — {{ o.status }} — R${{ '%.2f'%(o.total_cents/100) }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

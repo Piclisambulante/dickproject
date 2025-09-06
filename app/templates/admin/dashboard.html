@@ -1,0 +1,16 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Admin • Dashboard</h1>
+<div class="card">Produtos: <b>{{ prod_count }}</b></div>
+<div class="card">Pedidos pendentes: <b>{{ orders_pending }}</b></div>
+<div class="card">Pedidos pagos: <b>{{ orders_paid }}</b></div>
+<h3>Últimos pedidos</h3>
+<ul>
+{% for o in latest %}
+  <li>#{{ o.id }} — {{ o.status }} — R${{ '%.2f'%(o.total_cents/100) }}</li>
+{% endfor %}
+</ul>
+<a class="btn" href="{{ url_for('admin.products_list') }}">Gerenciar produtos</a>
+<a class="btn" href="{{ url_for('admin.orders_list') }}">Pedidos</a>
+{% endblock %}

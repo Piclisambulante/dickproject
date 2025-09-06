@@ -1,0 +1,12 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Perfil</h1>
+<h3>Seus últimos pedidos</h3>
+<ul>
+{% for o in orders %}
+  <li><a href="/pagamento/pix/{{ o.id }}">Pedido #{{ o.id }}</a> — {{ o.status }} — R${{ '%.2f'%(o.total_cents/100) }}</li>
+{% endfor %}
+</ul>
+<a class="btn" href="/historico">Ver histórico (15 dias)</a>
+{% endblock %}

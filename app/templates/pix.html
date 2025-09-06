@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h1>Pagamento PIX</h1>
+<p>Pedido #{{ order.id }} — Total R${{ '%.2f'%(order.total_cents/100) }}</p>
+<p>Escaneie o QR abaixo ou copie o código.</p>
+<img src="{{ order.pix_qr_url }}" alt="QR Code PIX"/>
+<textarea style="width:100%;height:120px;" readonly>{{ order.pix_payload }}</textarea>
+<p>Status atual: <b id="st">{{ order.status }}</b></p>
+<script>
+  setInterval(async () => {
+    const r = await fetch('/api/order-status/{{ order.id }}');
+    const j = await r.json();
+    document.getElementById('st').innerText = j.status;
+  }, 5000);
+</script>
+{% endblock %}

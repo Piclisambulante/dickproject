@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Criar conta</h2>
+<form method="post" action="/registrar">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Nome: <input name="name" required></label>
+  <label>CEP: <input name="cep" required></label>
+  <label>E-mail: <input name="email" type="email" required></label>
+  <label>Senha: <input name="password" type="password" required></label>
+  <button class="btn" type="submit">Registrar</button>
+</form>
+{% endblock %}
