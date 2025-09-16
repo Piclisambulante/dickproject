@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L ' Azur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wdth,wght@0,18..144,87,300..900;1,18..144,87,300..900&display=swap');
+
+    body {
+      font-family: 'Merriweather', serif;
+    }
+
+    .gold {
+      color: #E0B15C; /* dourado */
+    }
+
+    .bg-lazur {
+      background-color: #142B45; /* azul personalizado */
+    }
+
+    .vermelho-botao {
+      background-color: #C41919; /* vermelho personalizado */
+    }
+
+    .vermelho-botao:hover {
+      background-color: #C41919; /* hover mais escuro */
+    }
+
+    .box-info {
+      background-color: #a1cdff42;
+    }
+  </style>
+</head>
+<body class="bg-white flex justify-center items-center min-h-screen p-4">
+
+  <!-- Container principal -->
+  <div class="w-full max-w-md bg-lazur rounded-2xl shadow-lg p-4 text-white">
+    
+    <!-- Parte superior: foto + botão endereços -->
+    <div class="flex items-start gap-4">
+      <!-- Foto usuário -->
+      <div class="flex flex-col items-center">
+        <img src="/img/user icon.png" alt="Foto usuário"
+             class="w-20 h-20 mt-12 rounded-full shadow-md">
+        
+        <!-- Botão endereços -->
+        <button class="flex items-center gap-1 mt-2 text-sm bg-white text-blue-600 px-3 py-1 rounded-full shadow">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9.75l9-7.5 9 7.5M4.5 10.5v9a.75.75 0 00.75.75H9v-6h6v6h3.75a.75.75 0 00.75-.75v-9" />
+          </svg>
+          Endereços
+        </button>
+      </div>
+
+      <!-- Box com nome e infos -->
+      <div class="flex-1 box-info rounded-2xl p-10">
+        <h2 class="text-lg">Nome do Usuário</h2>
+        <p class="text-sm mt-1">usuario@gmail.com</p>
+        <p class="text-sm">Rua Exemplo, 123</p>
+        <p class="text-sm">CEP: 00000-000</p>
+        
+        <!-- Redefinir senha -->
+        <button class="mt-2 gold hover:underline">
+          Redefinir Senha
+        </button>
+      </div>
+    </div>
+
+    <!-- Botão sair -->
+    <div class="flex justify-center mt-6">
+      <button id="openModal" class="flex items-center gap-1 vermelho-botao px-20 py-2 rounded-full shadow-md text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m9 0l-3-3m3 3l-3 3" />
+        </svg>
+        Sair da Conta
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-100 text-center">
+      <p class="text-black text-lg mb-4">Deseja sair da conta?</p>
+      <div class="flex justify-center gap-5">
+        <button id="closeModal" class="px-4 py-1 bg-gray-300 rounded-md text-black">Voltar</button>
+        <a href="logout.html" class="px-4 py-1 bg-gray-300 rounded-md text-red-600 ">Sair</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("modal");
+    const openModal = document.getElementById("openModal");
+    const closeModal = document.getElementById("closeModal");
+
+    openModal.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+    });
+
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+    });
+
+    // fecha clicando fora do modal
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>
