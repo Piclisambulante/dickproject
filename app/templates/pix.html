@@ -1,17 +1,86 @@
-
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Pagamento PIX</h1>
-<p>Pedido #{{ order.id }} — Total R${{ '%.2f'%(order.total_cents/100) }}</p>
-<p>Escaneie o QR abaixo ou copie o código.</p>
-<img src="{{ order.pix_qr_url }}" alt="QR Code PIX"/>
-<textarea style="width:100%;height:120px;" readonly>{{ order.pix_payload }}</textarea>
-<p>Status atual: <b id="st">{{ order.status }}</b></p>
+<div style="max-width:780px;margin:2rem auto;text-align:center">
+  <h1>Pagamento via PIX</h1>
+  <p>Pedido #{{ order.id }}</p>
+
+  {% if order.pix_qr_url %}
+    <img src="{{ order.pix_qr_url }}" alt="QR PIX" style="max-width:320px;width:100%;height:auto" />
+  {% endif %}
+
+  {% if order.pix_payload %}
+  <div style="margin-top:1rem; font-family:monospace; word-break:break-all;">
+    {{ order.pix_payload }}
+  </div>
+  {% endif %}
+
+  <div style="text-align:center;margin-top:1rem">
+    Status: <span id="st">{{ order.status }}</span>
+  </div>
+
+  <!-- Botão Pagamento Concluído (irá aparecer quando o pagamento for confirmado) -->
+  <div style="text-align:center;margin-top:1rem; display: none;" id="whatsapp-button-container">
+    <button id="whatsapp-button" class="btn" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+      Pagamento Concluído - Ir para WhatsApp
+    </button>
+  </div>
+
+  <div style="text-align:center;margin-top:1rem">
+    <!-- GET simples -> sem CSRF -->
+    <a class="btn" id="btnOk" href="/webhook/pix/test/mark-paid/{{ order.id }}">Já paguei (testar)</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
 <script>
-  setInterval(async () => {
-    const r = await fetch('/api/order-status/{{ order.id }}');
-    const j = await r.json();
-    document.getElementById('st').innerText = j.status;
-  }, 5000);
+(function() {
+  async function poll() {
+    try {
+      // Solicita o status do pagamento
+      const r = await fetch(`/order-status/{{ order.id }}`);
+      const j = await r.json();
+      const st = String(j.status || '').toLowerCase(); // Converte o status para minúsculas
+      document.getElementById('st').innerText = j.status;
+
+      // Verifica se o pagamento foi concluído
+      if (['paid', 'approved', 'concluido', 'concluído', 'succeeded', 'success'].includes(st)) {
+        // Exibe o botão de pagamento concluído
+        document.getElementById('whatsapp-button-container').style.display = 'block';
+
+        // Adiciona o evento de clique para redirecionar para o WhatsApp
+        document.getElementById('whatsapp-button').addEventListener('click', function() {
+          const pedido = {
+            id: {{ order.id }},
+            produto: '{{ order.produto }}',
+            quantidade: {{ order.quantidade }},
+            valor: '{{ order.valor }}'
+          };
+
+          const mensagem = `Olá, gostaria de confirmar o pedido:\nID: ${pedido.id}\nProduto: ${pedido.produto}\nQuantidade: ${pedido.quantidade}\nValor: R$ ${pedido.valor}`;
+          const numeroWhatsapp = '55999999999'; // Número do WhatsApp da loja
+
+          const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+
+          // Redireciona para o WhatsApp
+          window.open(url, '_blank');
+        });
+
+        // Redireciona para a página de sucesso
+        window.location.href = '/checkout/sucesso/{{ order.id }}';
+        return;
+      }
+    } catch (e) {
+      console.error('Erro ao verificar o status do pagamento:', e);
+    }
+
+    // Verifica novamente após 1,5 segundos
+    setTimeout(poll, 1500);
+  }
+
+  // Inicia o polling assim que a página carregar
+  setTimeout(poll, 1500);
+})();
 </script>
 {% endblock %}

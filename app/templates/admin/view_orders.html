@@ -1,0 +1,30 @@
+
+{% extends 'admin/base.html' %}
+
+{% block content %}
+  <h2>Pedidos</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.client_name }}</td>
+          <td>{{ order.status }}</td>
+          <td>R$ {{ order.total_price }}</td>
+          <td>
+            <a href="{{ url_for('admin.view_order', id=order.id) }}" class="btn btn-info">Ver</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

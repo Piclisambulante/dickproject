@@ -1,0 +1,30 @@
+
+{% extends "admin/base.html" %}
+{% block content %}
+<h1>Relatório - Vendas Mensais</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Mês</th>
+      <th>Pedidos pagos</th>
+      <th>Receita (R$)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r.label }}</td>
+      <td>{{ r.orders }}</td>
+      <td>{{ '%.2f'|format(r.revenue) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Total</th>
+      <th>{{ totals.orders }}</th>
+      <th>{{ '%.2f'|format(totals.revenue) }}</th>
+    </tr>
+  </tfoot>
+</table>
+{% endblock %}

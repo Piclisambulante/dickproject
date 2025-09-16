@@ -7,6 +7,39 @@ from .. import db
 from ..models import Product, Order, AuditLog
 from ..auth_utils import admin_required
 
+
+def _to_cents(value: str) -> int:
+    """Converts '12.90', '12,90', or '1290' to integer cents.
+    Handles both decimal and non-decimal values.
+    """
+    if value is None:
+        return 0
+    s = value.strip().replace('R$', '').replace(' ', '').replace(',', '.')
+    if '.' not in s:
+        s = s + '.00'  # Add decimal point if none present
+    try:
+        f = float(s)
+        return int(round(f * 100))  # convert to cents
+    except ValueError:
+        return 0  # return 0 if conversion fails
+    
+    """Converte '12,90' ou '12.90' ou '1290' para centavos (int)."""
+    if value is None:
+        return 0
+    s = value.strip().replace('R$', '').replace(' ', '')
+    # Se vier com vírgula decimal brasileira
+    if ',' in s and '.' not in s:
+        s = s.replace('.', '')  # separadores de mil
+        s = s.replace(',', '.')
+    try:
+        f = float(s)
+        return int(round(f * 100))
+    except Exception:
+        try:
+            return int(s)
+        except Exception:
+            return 0
+
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
@@ -50,14 +83,27 @@ def products_new():
 @admin_required
 def products_create():
     name = request.form.get('name')
-    price_cents = int(request.form.get('price_cents', '0'))
+    price_cents = _to_cents(request.form.get('price_cents') or request.form.get('price') or '0')
     description = request.form.get('description', '')
     stock = int(request.form.get('stock', '0'))
     is_active = bool(request.form.get('is_active'))
     image_url = None
     if 'image' in request.files and request.files['image'].filename:
-        res = cloudinary.uploader.upload(request.files['image'])
-        image_url = res.get('secure_url')
+        res = None
+        image_url = None
+        try:
+            if current_app.config.get('USE_CLOUDINARY'):
+                res = cloudinary.uploader.upload(file, folder=os.getenv('CLOUDINARY_FOLDER','products'))
+                image_url = res.get('secure_url')
+        except Exception as e:
+            # fallback para salvar localmente
+            import uuid, os
+            upload_dir = os.path.join(current_app.root_path, '..', 'static', 'uploads')
+            os.makedirs(upload_dir, exist_ok=True)
+            fname = f"{uuid.uuid4().hex}_{file.filename}"
+            file.save(os.path.join(upload_dir, fname))
+            image_url = f"/static/uploads/{fname}"
+
     p = Product(name=name, description=description, price_cents=price_cents, stock=stock, image_url=image_url, is_active=is_active)
     db.session.add(p)
     db.session.commit()
@@ -79,7 +125,7 @@ def products_update(pid):
     p = Product.query.get_or_404(pid)
     p.name = request.form.get('name')
     p.description = request.form.get('description', '')
-    p.price_cents = int(request.form.get('price_cents', '0'))
+    p.price_cents = _to_cents(request.form.get('price_cents') or request.form.get('price') or '0')
     p.stock = int(request.form.get('stock', '0'))
     p.is_active = bool(request.form.get('is_active'))
     if 'image' in request.files and request.files['image'].filename:

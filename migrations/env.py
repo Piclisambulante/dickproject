@@ -6,7 +6,8 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 config = context.config
-fileConfig(config.config_file_name)
+log_config_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'logging.ini')
+fileConfig(log_config_path)
 
 # Use DATABASE_URL env var if present
 db_url = os.getenv("DATABASE_URL")

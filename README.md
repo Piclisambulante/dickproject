@@ -78,3 +78,46 @@ UPDATE "user" SET is_admin = true WHERE email = 'seu@email.com';
    `alembic upgrade head` — aplica as tabelas/alterações.
 3. (Opcional) Configurar webhook do seu PSP para `POST /webhook/pix` com `txid`.
 
+
+
+## Ambientes
+
+### Local (Windows / SQLite)
+```
+pip install -r requirements.windows.txt
+python app.py
+```
+Sem `DATABASE_URL`, o app usa SQLite (`local.db`).
+
+### Produção (Render/Heroku – Postgres)
+```
+pip install -r requirements.prod.txt
+# Configure DATABASE_URL (postgresql+psycopg://...)
+python app.py
+```
+O app aceita `postgres://` e faz o replace para `postgresql+psycopg://`.
+
+
+## Configuração (.env)
+Crie um arquivo `.env` com:
+
+```
+FLASK_ENV=development
+SECRET_KEY=change-me
+
+# PIX
+PIX_KEY=seu.email@provedor.com
+PIX_MERCHANT_NAME=Padaria L'Azur
+PIX_MERCHANT_CITY=Curitiba
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+```
+
+## Solução de problemas (PIX)
+- **QR não aparece**: verifique se `qrcode` e `Pillow` estão instalados e se `PIX_KEY` está definido.
+- **Payload inválido no app do banco**: confirme `PIX_MERCHANT_NAME` (máx. 25 chars) e `PIX_MERCHANT_CITY` (máx. 15 chars).
+- **Ambiente de produção**: gere o `txid` único por pedido e use webhook do PSP para confirmação automática.
+

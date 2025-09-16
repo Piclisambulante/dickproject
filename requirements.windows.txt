@@ -2,7 +2,6 @@ Flask==3.0.3
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
 Flask-WTF==1.2.1
-psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 cloudinary==1.41.0
 qrcode==7.4.2
@@ -10,5 +9,4 @@ Pillow==10.4.0
 requests==2.32.3
 sentry-sdk==2.9.0
 pytest==8.3.3
-gunicorn==22.0.0
-psycopg[binary]==3.2.10
+# gunicorn é opcional no Windows

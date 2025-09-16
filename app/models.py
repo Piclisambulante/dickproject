@@ -46,7 +46,7 @@ class Order(db.Model):
     total_cents = db.Column(db.Integer, default=0)
     pix_txid = db.Column(db.String(35))
     pix_payload = db.Column(db.Text)   # BR Code payload for QR
-    pix_qr_url = db.Column(db.String(500))  # base64 data URL or Cloudinary URL
+    pix_qr_url = db.Column(db.Text)   # base64 data URL or Cloudinary URL
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

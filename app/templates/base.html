@@ -1,42 +1,82 @@
-
 <!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Padaria L'Azur</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/missing.css@1.1.0">
     <style>
-      body { background: #0e2a47; color: #f2e8d5; }
-      .card { background: #24496e; padding: 12px; border-radius: 12px; margin: 8px; }
-      .btn { background:#2f64a1; color:#fff; padding:8px 12px; border-radius:8px; text-decoration:none; }
-      .btn:focus, .btn:hover{ filter:brightness(1.1); }
-      header, nav { display:flex; gap:16px; align-items:center; }
-      img.thumb{ width:96px; height:96px; object-fit:cover; border-radius:10px; }
-      .price { font-weight:700; }
+      :root{
+        --bg:#0b1f36;
+        --bg2:#0f2a46;
+        --card:#143a63;
+        --accent:#3a82f6;
+        --text:#e9eef6;
+        --muted:#a8bdd6;
+        --success:#22c55e;
+      }
+      *{ box-sizing:border-box; }
+      html,body{ height:100%; }
+      body { margin:0; background: linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      a{ color:inherit; text-decoration:none; }
+      .container{ max-width:1100px; margin:0 auto; padding: 0 16px; }
+      header{ position:sticky; top:0; z-index:50; backdrop-filter: blur(6px); background: rgba(8,20,36,.7); border-bottom: 1px solid rgba(255,255,255,.06); }
+      .nav{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding: 14px 0; }
+      .nav-left, .nav-right{ display:flex; gap:10px; align-items:center; }
+      .brand{ font-weight:700; letter-spacing:.2px; font-size:18px; padding:8px 10px; border-radius:12px; background: rgba(255,255,255,.06); }
+      .btn{ background: var(--accent); color:#fff; padding:8px 12px; border-radius:10px; font-weight:600; transition:.15s ease; }
+      .btn.ghost{ background: transparent; border:1px solid rgba(255,255,255,.18); color: var(--text); }
+      .btn:hover{ transform: translateY(-1px); filter:brightness(1.05); }
+      .badge{ padding:6px 10px; border-radius:999px; background: rgba(255,255,255,.08); font-weight:600; font-size:12px; }
+      main{ padding: 28px 0 40px; }
+      .grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap:14px; }
+      .card{ background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); padding:16px; border-radius:16px; border:1px solid rgba(255,255,255,.08); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+      .card h3{ margin:.4rem 0; font-size: 1.05rem; }
+      .thumb{ width:100%; height:160px; object-fit:cover; border-radius:12px; display:block; }
+      .price{ font-weight:700; color:#fff; letter-spacing:.2px; }
+      footer{ margin-top:40px; padding:22px 0; border-top:1px solid rgba(255,255,255,.06); color: var(--muted); font-size:14px; }
+      .alert{ background:#0f3a1f; border:1px solid rgba(34,197,94,.4); color:#d2ffe1; padding:10px 12px; border-radius:10px; }
+      /* page titles */
+      .page-title{ font-size: clamp(24px, 3vw, 32px); font-weight:800; letter-spacing:.2px; margin: 6px 0 16px; }
     </style>
   </head>
   <body>
-    <header style="justify-content:space-between;padding:10px 16px;">
-      <nav>
-        <a href="/" class="btn">Início</a>
-        <a href="/cardapio" class="btn">Cardápio</a>
-        <a href="/carrinho" class="btn">Carrinho</a>
-        <a href="/sobre" class="btn">Sobre nós</a>
-      </nav>
-      {% if current_user.is_authenticated and current_user.is_admin %}<a class="btn" href="/admin/">Admin</a>{% endif %}
-      <nav>
-        <a class="btn" href="/login">Entrar</a>
-        <a class="btn" href="/registrar">Criar conta</a>
-      </nav>
+    <header>
+      <div class="container nav">
+        <div class="nav-left">
+          <a class="brand" href="/">L'Azur</a>
+          <a class="btn ghost" href="/">Início</a>
+          <a class="btn ghost" href="/cardapio">Cardápio</a>
+          <a class="btn ghost" href="/carrinho">Carrinho</a>
+          <a class="btn ghost" href="/sobre">Sobre nós</a>
+        </div>
+        <div class="nav-right">
+          {% if current_user.is_authenticated %}
+            {% if current_user.is_admin %}
+              <a class="btn" href="/admin/"><span class="badge">Admin</span></a>
+            {% endif %}
+            <a class="btn ghost" href="/perfil">Perfil</a>
+            <a class="btn" href="/logout">Sair</a>
+          {% else %}
+            <a class="btn ghost" href="/login">Entrar</a>
+            <a class="btn" href="/registrar">Criar conta</a>
+          {% endif %}
+        </div>
+      </div>
     </header>
-    <main style="max-width:1000px;margin:0 auto;padding:16px;">
+    <main class="container">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
-          <div class="card" style="background:#5a2;">{{ messages[0] }}</div>
+          <div class="alert">{{ messages[0] }}</div>
         {% endif %}
       {% endwith %}
       {% block content %}{% endblock %}
     </main>
+    <footer>
+      <div class="container">© {{  (now() if false)  }} Padaria L'Azur &middot; Feito com ❤️</div>
+    </footer>
   </body>
 </html>
