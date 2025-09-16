@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrinho</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="carrinho.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav class="menu" aria-label="Navegação principal">
+      <button class="menu-btn" type="button" aria-label="Abrir menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#">Minha conta</a></li>
+      </ul>
+      <button class="cart-btn" type="button" aria-label="Abrir carrinho">
+        <img src="img/carrinho.png" alt="Carrinho" />
+      </button>
+    </nav>
+  </header>
+
+  <!-- Drawer / Menu lateral -->
+  <div id="nav-overlay" aria-hidden="true">
+    <nav class="nav-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="nav-panel-header">
+        <h2 id="drawer-title">Menu</h2>
+        <button class="nav-close" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <ul class="nav-list">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="faq.html">Perguntas frequentes</a></li>
+        <li><a href="sobre.html">Sobre nós</a></li>
+        <li><a href="pedidos.html">Pedidos</a></li>
+        <li><a href="historico.html">Histórico de compras</a></li>
+        <li><a href="conta.html">Minha conta</a></li>
+      </ul>
+
+      <div class="nav-panel-brand">
+        <img src="img/logo.webp" alt="L'Azur" />
+      </div>
+    </nav>
+  </div>
+
+  <!-- Página do Carrinho -->
+  <main class="cart-page">
+    <h1>Carrinho</h1>
+
+    <div class="cart-container">
+      <!-- Lista de produtos -->
+      <section class="cart-items" aria-labelledby="titulo-lista">
+        <h2 id="titulo-lista">Itens no carrinho</h2>
+        <table role="table">
+          <thead>
+            <tr>
+              <th scope="col">Produtos</th>
+              <th scope="col" style="text-align:center;">Quantidade</th>
+              <th scope="col" style="text-align:right;">Valor produto(s)</th>
+            </tr>
+          </thead>
+          <tbody><!-- linhas são geradas via JS --></tbody>
+        </table>
+      </section>
+
+      <!-- Resumo do pedido -->
+      <form id="checkout-form" class="order-summary" aria-labelledby="titulo-resumo" novalidate>
+        <h2 id="titulo-resumo">Resumo do pedido</h2>
+        <p>Produtos <span id="subtotal">R$ 0,00</span></p>
+
+        <label for="endereco">Digite o seu endereço <span aria-hidden="true" style="color:#b00020">*</span></label>
+        <input
+          type="text"
+          id="endereco"
+          name="endereco"
+          placeholder="Ex: trombudo central, 260"
+          required
+          aria-required="true"
+          autocomplete="address-line1"
+        />
+        <small id="endereco-error" class="field-error" role="alert" aria-live="polite"></small>
+
+        <label for="complemento">Complemento (opcional)</label>
+        <input
+          type="text"
+          id="complemento"
+          name="complemento"
+          placeholder="Ex: Bloco B, 21"
+          autocomplete="address-line2"
+        />
+
+        <p>Frete <span id="frete">R$ 5,00</span></p>
+        <p class="total"><strong>Total a pagar</strong> <span id="total"><strong>R$ 5,00</strong></span></p>
+
+        <button class="finalizar" type="submit">Finalizar compra ✔</button>
+        <a href="index.html" class="continuar">Continuar comprando</a>
+      </form>
+    </div>
+  </main>
+
+  <script src="carrinho.js"></script>
+</body>
+</html>
