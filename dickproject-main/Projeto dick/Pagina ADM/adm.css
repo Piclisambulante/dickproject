@@ -1,0 +1,346 @@
+
+body {
+  font-family: 'Merriweather', serif;
+  margin: 0;
+  padding: 0;
+  background: #5a3624;
+  color: #fff;
+}
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* --------------------------
+   L’Azur – MOBILE FIRST CSS
+   Paleta: azul noite, marrom cacau, dourado
+--------------------------- */
+
+:root{
+  --blue-900:#0e2a3a;
+  --blue-800:#0f3449;
+  --blue-700:#102f44;
+  --cocoa-800:#5a3526;
+  --gold:#d9b56b;
+  --carrinho:#E0B15C;
+  --gold-200:#f3e3b3;
+  --text:#f5f7fb;
+  --shadow:0 10px 24px rgba(0,0,0,.35);
+  --page-pad: 12px;
+}
+
+/* =========================
+   Animações de Fade e Slide
+========================= */
+.section-animation {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.section-animation.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header-animation {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.header-animation.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Reset ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:var(--text);
+  background:var(--cocoa-800);
+  font:400 15px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+}
+img{max-width:100%;display:block}
+ul{margin:0;padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+
+/* ===== Container para telas grandes ===== */
+@media (min-width:768px){
+  body{display:flex;justify-content:center}
+  main,header,.hero{width:430px}
+}
+
+/* ===== Header ===== */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:var(--blue-900);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.menu{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 16px;
+}
+.menu-btn,
+.cart-btn{
+  border:0;
+  background-color:transparent;
+  color:var(--text);
+  width:36px;height:36px;
+  display:grid;place-items:center;
+}
+.menu-btn{font-size:18px;cursor:pointer;}
+.cart-btn img{width:18px;height:18px;cursor:pointer;}
+.nav-links{display:flex;gap:18px}
+.nav-links a{
+  font-size:.9rem;opacity:.9;transition:opacity .2s ease;
+}
+.nav-links a:hover{opacity:1;color:var(--gold)}
+
+/* ===== Drawer (menu lateral) ===== */
+#nav-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease, background .35s ease;
+  z-index: 1200;
+}
+#nav-overlay.open{
+  background: rgba(0,0,0,.55);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Estilos para o texto do submenu */
+.submenu-text {
+  display: none; /* Inicialmente o texto fica oculto */
+  opacity: 0; /* Inicia invisível */
+  transform: translateY(20px); /* Começa um pouco abaixo */
+  background-color: #1a1a1a;
+  padding: 20px; /* Aumentei o padding para dar mais espaço ao texto */
+  color: white;
+  font-size: 1.0rem; /* Aumentei o tamanho da fonte */
+  line-height: 1.6;
+  border-radius: 5px;
+  margin-top: 20px;
+  transition: all 0.6s ease; /* Animação de transição suave */
+  animation: slideUp 0.6s ease-out forwards; /* Animação para o texto surgir */
+}
+
+/* A classe 'active' faz o texto aparecer */
+.submenu-text.active {
+  display: block; /* Mostra o texto */
+  opacity: 1; /* Torna o texto visível */
+  transform: translateY(0); /* Move o texto para a posição original */
+}
+
+/* Animação do texto surgindo (slide up com fade in) */
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* painel lateral */
+.nav-panel{
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: min(88vw, 320px);
+  background:#101010;            /* preto elegante */
+  color:#f6f6f6;
+  box-shadow: 0 8px 26px rgba(0,0,0,.45);
+  transform: translateX(-100%);
+  transition: transform .28s ease;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 22px;
+}
+#nav-overlay.open .nav-panel{ transform: translateX(0); }
+
+/* topo do painel */
+.nav-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom: 12px;
+}
+.nav-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-close {
+  background: transparent; /* tira o fundo */
+  color: #ffffff; /* cor do X */
+  font-size: 2rem; /* aumenta o X */
+  border: none;
+  cursor: pointer;
+}
+
+/* lista */
+.nav-list{ list-style:none; margin:8px 0 18px; padding:0; }
+.nav-list li{ margin:10px 0; }
+.nav-list a{
+  display:block; padding:10px 12px; border-radius:10px;
+  color:#fff; text-decoration:none; font-weight:500; letter-spacing:.2px;
+  transition: background .18s ease, transform .06s ease;
+  outline: none;
+}
+.nav-list a:hover{ background:rgba(255,255,255,.06); }
+.nav-list a:active{ transform: scale(.98); }
+
+/* marca no rodapé do painel */
+.nav-panel-brand{
+  margin-top:auto; display:grid; place-items:center; padding-top:18px;
+}
+.nav-panel-brand img{ width:84px; opacity:.95; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+
+/* acessibilidade – remove “caixa azul” nativa e põe foco custom */
+.menu .menu-btn:focus,
+.nav-close:focus,
+.nav-list a:focus{
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(224,177,92,.9);  /* dourado suave */
+  border-radius:10px;
+}
+
+main {
+  padding: 1rem;
+}
+
+h2 {
+  background: #e0b15c;
+  color: #3d2b1f;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Aumentei o espaçamento entre os campos do formulário */
+}
+
+form input, form select, form button {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem; /* Aumentei o tamanho da fonte para melhor leitura */
+}
+
+form button {
+  background: #0b2a38;
+  color: #e0b15c;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+form button:hover {
+  background: #123c4d;
+}
+
+.msg-sucesso {
+  display: none;
+  margin-top: 1rem;
+  color: #00ff88;
+  font-weight: bold;
+}
+
+/* Layout mobile-first (1 coluna por padrão) */
+.produtos-lista {
+  display: grid;
+  grid-template-columns: 1fr; /* Por padrão, 1 coluna */
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.produtos-lista .produto {
+  background: #3d2b1f;
+  padding: 10px; /* Aumentei o padding para dar mais espaçamento */
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  height: 250px; /* Ajuste a altura do card aqui */
+  max-width: 250px; /* Ajusta a largura máxima para os cards */
+  margin: 0 auto; /* Centraliza os cards */
+  overflow: hidden;
+}
+
+.produtos-lista img {
+  width: 100%; /* A imagem ocupa toda a largura do card */
+  aspect-ratio: 1/1; /* mantém formato quadrado */
+  object-fit: cover; /* A imagem preenche o espaço sem distorcer */
+  border-radius: 8px;
+}
+
+.btn-excluir {
+  background-color: #d9534f; /* Cor vermelha para destacar */
+  color: white; /* Texto branco */
+  border: none; /* Remover borda padrão */
+  border-radius: 5px; /* Cantos arredondados */
+  padding: 0.5rem 1rem; /* Aumentei o padding para melhorar a área clicável */
+  font-size: 1rem;
+  cursor: pointer; /* Apontador de cursor para indicar que é clicável */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
+}
+
+.btn-excluir:hover {
+  background-color: #c9302c; /* Tom de vermelho mais escuro ao passar o mouse */
+  transform: scale(1.05); /* Leve aumento de tamanho ao passar o mouse */
+}
+
+.btn-excluir:focus {
+  outline: none; /* Remove o contorno padrão de foco */
+  box-shadow: 0 0 0 3px rgba(217, 53, 53, 0.5); /* Adiciona um brilho ao redor do botão ao focar */
+}
+
+.produtos-lista .produto button {
+  position: absolute;
+  bottom: 5px; /* Coloca o botão na parte inferior do produto */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px; /* Dá um espaço entre o texto e o botão */
+}
+
+/* Responsividade para telas maiores */
+@media (min-width: 768px) {
+  .produtos-lista {
+    grid-template-columns: repeat(3, 1fr); /* Exibe 3 colunas para telas maiores que 768px */
+  }
+
+  .produtos-lista .produto {
+    height: 250px; /* Mantém a altura dos cards consistente */
+    max-width: 250px; /* Ajusta a largura máxima dos cards */
+  }
+}
+
+@media (max-width: 768px) {
+  .produtos-lista {
+    grid-template-columns: repeat(3, 1fr); /* Exibe 3 colunas em telas menores também */
+  }
+
+  form input, form select, form button {
+    padding: 1rem; /* Aumenta o padding para tornar mais fácil de clicar */
+    font-size: 1.1rem; /* Ajusta o tamanho da fonte para melhorar a legibilidade */
+  }
+
+  .produtos-lista .produto {
+    height: auto; /* Deixa a altura automática para melhor visualização em telas pequenas */
+  }
+
+  h2 {
+    font-size: 1.2rem; /* Ajusta o tamanho do título para telas menores */
+  }
+}
