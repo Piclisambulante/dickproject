@@ -243,37 +243,94 @@ button.logout:hover {
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .35));
 }
 
+/* ===== Card do Perfil ===== */
+#profileCard {
+  display: block; /* Inicialmente visível */
+}
+
+/* ===== Avatar (escondido após logout) ===== */
+#profileImage {
+  display: block;  /* Mostra a imagem inicialmente */
+}
+
+#loginButton {
+  display: none;  /* O botão de login está oculto inicialmente */
+}
+
+/* ===== Botão de Logout (estilo) ===== */
+button.logout {
+  background-color: transparent;
+  color: #e60000;  /* Texto vermelho */
+  padding: 6px 15px;
+  border-radius: 25px;
+  border: 1px solid #e60000;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 180px;
+  height: 35px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+button.logout:hover {
+  background-color: #e60000;
+  color: white;
+  border-color: #b30000;
+}
+
+#purchaseHistory, #productGallery, #purchaseItems {
+  display: block; /* Inicialmente visíveis */
+}
+
+#purchaseHistory, #productGallery, #purchaseItems, #profileImage {
+  transition: all 0.5s ease;
+}
+
+#loginButton {
+  transition: all 0.5s ease;
+}
+
 /* ===== Estilos do Modal ===== */
 .modal {
-  display: none;  /* Inicialmente escondido */
+  display: none; /* FICA ESCONDIDO ATÉ GANHAR .show */
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);  /* Fundo escuro com opacidade maior */
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com opacidade maior */
   padding-top: 50px;
-  display: flex;
-  justify-content: center;  /* Alinha o conteúdo do modal horizontalmente */
-  align-items: center;  /* Alinha o conteúdo do modal no centro */
-  overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a altura da tela */
+  justify-content: center; /* Só funciona quando .show aplicar display:flex */
+  align-items: center;     /* Idem */
+  overflow-y: auto;
   transition: all 0.3s ease;
 }
 
+/* QUANDO QUISER ABRIR O MODAL, ADICIONE A CLASSE .show VIA JS */
+.modal.show {
+  display: flex;
+}
+
 .modal-content {
-  background-color: #2b2b2b; /* Cor de fundo mais escura */
+  background-color: #2b2b2b;
   margin: auto;
   padding: 40px 60px;
   border: 1px solid #888;
   width: 100%;
-  max-width: 600px; /* A largura máxima do modal */
-  min-height: 500px; /* Aumenta a altura mínima do modal */
-  border-radius: 25px;  /* Bordas arredondadas grandes */
-  color: var(--gold);  /* Cor do texto dourado */
+  max-width: 600px;
+  min-height: 500px;
+  border-radius: 25px;
+  color: var(--gold);
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);  /* Sombra suave e expandida */
-  animation: fadeIn 0.5s ease-out; /* Animação para abrir o modal */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.5s ease-out;
+  transform: scale(0.95);
+}
+
+.modal-content:hover {
+  transform: scale(1);
 }
 
 /* Animação de Fade In */
@@ -292,37 +349,38 @@ button.logout:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;  /* Espaço maior entre o título e os campos */
-}
-
-.logo {
-  width: 80px;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* Menor espaço entre o título e os campos */
 }
 
 h2 {
   font-family: 'Georgia', serif;
-  font-size: 2.4rem; /* Tamanho grande e imponente para o título */
-  color: #E0B15C; /* Dourado para o título */
-  margin-bottom: 20px; /* Espaço maior abaixo do título */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra no título para destacar */
+  font-size: 2.4rem;
+  color: #E0B15C;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header img {
+  width: 80px;
+  margin-bottom: 15px;
+  opacity: 0.5;  /* Opacidade reduzida da imagem */
 }
 
 input {
   width: 100%;
   padding: 14px;
-  margin: 10px 0;  /* Menor espaço entre os campos de entrada */
-  border-radius: 10px;  /* Bordas mais arredondadas */
+  margin: 5px 0 15px 0;  /* Ajuste no espaçamento para subir as caixas de input e dar mais espaçamento entre elas */
+  border-radius: 10px;
   border: 1px solid #888;
   background-color: #7F5C42;
   color: white;
   font-size: 1rem;
-  transition: border-color 0.3s ease; /* Efeito suave na borda do campo */
+  transition: border-color 0.3s ease;
 }
 
 input:focus {
   outline: none;
-  border-color: #D6A75B;  /* Borda dourada quando o campo está em foco */
+  border-color: #D6A75B;
 }
 
 button {
@@ -335,26 +393,35 @@ button {
   font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  margin-top: 15px; /* Distância maior entre o botão e o conteúdo acima */
+  margin-top: 15px;
 }
 
 button:hover {
   background-color: #D6A75B;
-  transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+  transform: scale(1.05);
 }
 
+/* Botões Criar Conta e Esqueci a senha */
 .modal-footer {
-  margin-top: 25px;
-  font-size: 0.9rem;
-  color: #D6A75B;
+  margin-top: 20px; /* Aumento o espaçamento entre o final do formulário e os botões */
+  display: flex;
+  justify-content: space-between; /* Coloca os botões lado a lado */
 }
 
 .modal-footer a {
+  display: inline-block;
+  margin-top: 10px;
   color: #D6A75B;
-  text-decoration: none;
-  margin: 0 15px;
+  font-size: 0.9rem;
+  width: 48%;  /* Limita os botões a 48% da largura para ficarem lado a lado */
+  text-align: center;
 }
 
+.modal-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Fechar o modal */
 .close-btn {
   color: #D6A75B;
   font-size: 30px;
@@ -365,22 +432,17 @@ button:hover {
   cursor: pointer;
 }
 
-/* Exibe o modal */
-.modal.show {
-  display: block;
-}
-
 /* ===== Responsividade para Mobile ===== */
 @media (max-width: 768px) {
   .modal-content {
-    width: 90%;  /* Reduz a largura do modal em dispositivos móveis */
-    max-width: 450px;  /* Ajusta a largura máxima */
+    width: 90%;
+    max-width: 450px;
     padding: 25px;
-    min-height: 350px;  /* Ajusta a altura em dispositivos móveis */
+    min-height: 350px;
   }
 
   h2 {
-    font-size: 1.8rem;  /* Tamanho reduzido do título */
+    font-size: 1.8rem;
   }
 
   input {
@@ -397,162 +459,152 @@ button:hover {
     width: 90%;
     max-width: 320px;
     padding: 20px;
-    min-height: 300px;  /* Ajuste de altura para telas muito pequenas */
+    min-height: 300px;
   }
 
   h2 {
     font-size: 1.6rem;
   }
 }
+/* ===== Estilo do Balão de Sucesso ===== */
+.balao-sucesso {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 30px;
+  background-color: #28a745; /* Verde para sucesso */
+  color: white;
+  font-size: 16px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  animation: aparecer 1s ease-out, desaparecer 3s 2s forwards;
+  display: none; /* Inicialmente oculto */
+}
 
-/* ===== Perfil do Usuário ===== */
-.main-profile {
-  background-color: var(--cream);
-  color: var(--navy);
-  padding: 20px;
+/* Animação de aparecer */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Animação de desaparecer */
+@keyframes desaparecer {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* ===== Estilo do Modal de Confirmação de Logout ===== */
+#confirmLogoutModal .modal-content {
+  background-color: #333; /* Fundo mais suave */
+  margin: auto;
+  padding: 40px;
+  border-radius: 12px;  /* Bordas mais arredondadas */
+  color: #fff;
+  text-align: center;
   width: 100%;
   max-width: 400px;
-  margin: 40px auto;
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  text-align: center;
-  position: relative;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);  /* Sombra suave */
+  animation: fadeInModal 0.5s ease-out; /* Animação de fade in */
 }
 
-.profile-header {
-  margin-top: -60px;
+/* Animação de fade-in */
+@keyframes fadeInModal {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.profile-header img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 5px solid var(--cream);
-  box-shadow: var(--shadow);
+#confirmLogoutModal .modal-header h2 {
+  font-size: 1.6rem;
+  color: #f1c40f;  /* Cor dourada para o título */
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-.profile-header h1 {
-  font-size: 24px;
-  color: var(--navy);
-  margin-top: 10px;
-}
-
-.profile-header p {
-  font-size: 16px;
-  color: var(--blue-700);
-}
-
-.profile-header button {
-  background-color: var(--navy);
-  color: var(--gold);
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.profile-header button:hover {
-  background-color: var(--blue-800);
-  transition: background-color 0.3s ease;
-}
-
-/* ===== Histórico de Compras ===== */
-.history-card {
+#confirmLogoutModal .modal-footer {
+  margin-top: 30px;
   display: flex;
-  flex-direction: row;
-  gap: 20px;
-  background-color: var(--cream);
-  color: var(--navy);
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-}
-
-.history-card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-right: 15px;
-}
-
-.history-info {
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  gap: 20px;
 }
 
-.history-info h4 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--navy);
-}
-
-.history-info p {
-  font-size: 14px;
-  color: var(--blue-700);
-}
-
-.history-info .status {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--gold);
-}
-
-.history-info .price {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--gold);
-}
-
-.history-info .date {
-  font-size: 14px;
-  color: var(--blue-700);
-}
-
-/* ===== Botões ===== */
-.button {
-  background-color: var(--navy);
-  color: var(--gold);
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: var(--blue-800);
-  transition: background-color 0.3s ease;
-}
-
-a {
-  color: var(--text-light);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--gold);
-}
-
-/* ===== Glow Bonitinho (remove quadrado azul) ===== */
-button:focus,
-button:active,
-.cart-btn:focus,
-.cart-btn:active,
-.menu-btn:focus,
-.menu-btn:active,
-.add-btn:focus,
-.add-btn:active,
-a:focus,
-a:active,
-input:focus,
-input:active {
-  outline: none !important;
-  box-shadow: 0 0 0 3px rgba(217, 181, 107, 0.5);
+#confirmLogoutModal .btn {
+  background-color: #f1c40f; /* Cor de botão dourada */
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 30px;
   border-radius: 8px;
-  transition: box-shadow 0.2s ease;
+  cursor: pointer;
+  border: none;
+  width: 48%;  /* Botões mais proporcionais */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#confirmLogoutModal .btn:hover {
+  background-color: #e67e22; /* Cor mais escura no hover */
+  transform: scale(1.05); /* Aumenta um pouco o botão ao passar o mouse */
+}
+
+#confirmLogoutModal .close-btn {
+  font-size: 30px;
+  color: #e67e22;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  transition: color 0.3s ease;
+}
+
+#confirmLogoutModal .close-btn:hover {
+  color: #f1c40f; /* Mudando para cor dourada ao passar o mouse */
+}
+
+/* ===== Estilo do Modal ===== */
+.modal {
+  display: none; /* Fica escondido até receber a classe .show */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);  /* Fundo mais suave */
+  padding-top: 50px;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+/* Quando a classe .show é adicionada, o modal aparece */
+.modal.show {
+  display: flex;
+}
+
+/* ===== Ajustes para Responsividade ===== */
+@media (max-width: 768px) {
+  #confirmLogoutModal .modal-content {
+    width: 90%;
+    padding: 25px;
+  }
+
+  #confirmLogoutModal .btn {
+    padding: 10px 20px;
+  }
 }

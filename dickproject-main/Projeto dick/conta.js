@@ -183,96 +183,184 @@ function addToCart({ title, flavor = '', img, priceNumber, qty = 1 }) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  const sucessoBalão = document.getElementById('sucessoBalão');  // Elemento do balão de sucesso
+  const logoutBalão = document.getElementById('logoutBalão');    // Elemento do balão de logout
+  const erroBalão = document.getElementById('erroBalão');        // Elemento do balão de erro
+  const confirmLogoutModal = document.getElementById('confirmLogoutModal');  // Modal de confirmação de logout
+  const closeLogoutModalBtn = document.getElementById('closeLogoutModal');    // Botão de fechar o modal de logout
+  const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');      // Botão de confirmar logout
+  const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');        // Botão de cancelar logout
 
-  // Seleção dos elementos
+  // Função para exibir o balão de sucesso ou erro
+  function mostrarBalão(mensagem, balão) {
+    balão.textContent = mensagem;
+    balão.style.display = 'block'; // Mostrar o balão
+    setTimeout(() => {
+      balão.style.display = 'none'; // Esconder o balão após a animação
+    }, 5000); // O balão desaparece após 5 segundos
+  }
+
+  // Verificar se o usuário já está logado no localStorage
+  const storedLoginStatus = localStorage.getItem('loggedIn');
+
+  // Se estiver logado, exibe as informações do usuário
+  if (storedLoginStatus === 'true') {
+    const storedUser = localStorage.getItem('user');
+    const user = JSON.parse(storedUser);
+
+    document.getElementById('userName').innerText = user.name;
+    document.getElementById('userEmail').innerText = user.email;
+    document.getElementById('userAvatar').src = user.profilePicture || 'img/user.jpg';
+    document.getElementById('loginButton').style.display = 'none';
+    document.getElementById('profileCard').style.display = 'block';
+
+    // Exibir balão de login bem-sucedido
+    mostrarBalão('Login bem-sucedido!', sucessoBalão);
+  } else {
+    document.getElementById('loginButton').style.display = 'block';
+    document.getElementById('profileCard').style.display = 'none';
+  }
+
+  // Elementos de interação
   const loginBtn = document.getElementById('loginBtn');
-  const loginModal = document.getElementById('loginModal');
-  const closeModalBtn = document.getElementById('closeModal');
+  const logoutBtn = document.getElementById('logoutBtn');
   const profileCard = document.getElementById('profileCard');
   const loginButton = document.getElementById('loginButton');
-  const logoutBtn = document.getElementById('logoutBtn');
+  const formLogin = document.getElementById('formLogin');
+  const loginModal = document.getElementById('loginModal');
+  const closeModalBtn = document.getElementById('closeModal');
+  const profileUpload = document.getElementById('profileUpload');
   const userName = document.getElementById('userName');
   const userEmail = document.getElementById('userEmail');
+  const userAvatar = document.getElementById('userAvatar');
 
-  // Exibir o modal de login
+  // Abrir o modal de login
   loginBtn.addEventListener('click', function () {
-    loginModal.style.display = 'block';
-    profileCard.style.display = 'none';  // Esconde o perfil enquanto o login está aberto
-    loginButton.style.display = 'none';  // Esconde o botão de login
+    loginModal.classList.add('show');
+    profileCard.style.display = 'none';
+    loginButton.style.display = 'none';
   });
 
-  // Fechar o modal de login ao clicar no 'x'
+  // Fechar o modal de login
   closeModalBtn.addEventListener('click', function () {
-    loginModal.style.display = 'none';
-    profileCard.style.display = 'block';  // Exibe o perfil novamente
-    loginButton.style.display = 'none';  // Esconde o botão de login
+    loginModal.classList.remove('show');
+    profileCard.style.display = 'none';
+    loginButton.style.display = 'block';
   });
 
-  // Função para simular o login
-  const loginForm = document.getElementById('loginForm');
-  loginForm.addEventListener('submit', function (e) {
+  // Alternar para o formulário de criar conta
+  document.getElementById('showCreateAccount').addEventListener('click', function () {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('createAccountForm').style.display = 'block';
+  });
+
+  // Alternar para o formulário de login
+  document.getElementById('showLogin').addEventListener('click', function () {
+    document.getElementById('createAccountForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+  });
+
+  // Função para login (validando e-mail e senha)
+  formLogin.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    if (email && password) {
-      // Simula login (você pode substituir com autenticação real)
-      console.log('Login realizado com sucesso!');
+    const storedUser = localStorage.getItem('user');
+    const user = JSON.parse(storedUser);
 
-      // Atualiza as informações do perfil com os dados de login
-      userName.innerText = 'Usuário';  // Altere conforme o nome do usuário real
-      userEmail.innerText = email;  // Altere para o e-mail fornecido durante o login
+    if (user && user.email === email && user.password === password) {
+      // Atualiza as informações do perfil
+      userName.innerText = user.name;
+      userEmail.innerText = user.email;
+      userAvatar.src = user.profilePicture || 'img/user.jpg';
 
-      // Fecha o modal de login
-      loginModal.style.display = 'none';
-
-      // Exibe o perfil e o botão de logout
+      // Salva os dados no localStorage
+      localStorage.setItem('loggedIn', 'true');
+      loginModal.classList.remove('show');
       profileCard.style.display = 'block';
-      loginButton.style.display = 'none';  // Esconde o botão de login quando já estiver logado
+      loginButton.style.display = 'none';
+
+      // Exibir balão de login bem-sucedido
+      mostrarBalão('Login bem-sucedido!', sucessoBalão);
     } else {
-      alert('Por favor, preencha todos os campos!');
+      // Exibir balão de erro se e-mail ou senha estiverem incorretos
+      mostrarBalão('E-mail ou senha inválidos!', erroBalão);
     }
   });
 
-  // Função de Logout
+  // Função para criar conta
+  document.getElementById('formCreateAccount').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('newName').value;
+    const email = document.getElementById('newEmail').value;
+    const password = document.getElementById('newPassword').value;
+
+    // Salva as informações do usuário no localStorage
+    const newUser = { name, email, password, profilePicture: '' };
+    localStorage.setItem('user', JSON.stringify(newUser));
+
+    // Exibir balão de sucesso
+    mostrarBalão('Conta criada com sucesso!', sucessoBalão);
+
+    // Volta para o formulário de login
+    document.getElementById('createAccountForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+  });
+
+  // Função para logout (exibir modal de confirmação)
   logoutBtn.addEventListener('click', function () {
-    // Simula logout (aqui você pode adicionar a lógica real de logout)
+    confirmLogoutModal.classList.add('show'); // Exibe o modal de confirmação
+  });
+
+  // Fechar o modal de logout
+  closeLogoutModalBtn.addEventListener('click', function () {
+    confirmLogoutModal.classList.remove('show'); // Fecha o modal de confirmação
+  });
+
+  // Confirmar o logout
+  confirmLogoutBtn.addEventListener('click', function () {
     console.log('Logout realizado!');
 
-    // Esconde o perfil e exibe o botão de login
-    profileCard.style.display = 'none';
-    loginButton.style.display = 'block';  // Exibe o botão de login novamente
-
-    // Limpar os dados do usuário
+    // Limpa os dados do perfil
     userName.innerText = '';
     userEmail.innerText = '';
+    userAvatar.src = 'img/user.jpg';
+
+    // Remove os dados do localStorage e marca o status como "não logado"
+    localStorage.removeItem('user');
+    localStorage.setItem('loggedIn', 'false');
+
+    // Exibe o botão de login novamente
+    loginButton.style.display = 'block';
+    profileCard.style.display = 'none';
+
+    // Exibir balão de logout
+    mostrarBalão('Você saiu da sua conta!', logoutBalão);
+
+    // Fechar o modal após a confirmação
+    confirmLogoutModal.classList.remove('show');
   });
-    
 
-});
-// Acessar os elementos
-const showCreateAccount = document.getElementById('showCreateAccount');
-const showLogin = document.getElementById('showLogin');
-const loginForm = document.getElementById('loginForm');
-const createAccountForm = document.getElementById('createAccountForm');
+  // Cancelar o logout
+  cancelLogoutBtn.addEventListener('click', function () {
+    confirmLogoutModal.classList.remove('show'); // Fecha o modal sem logout
+  });
 
-// Mostrar o formulário de criar conta
-showCreateAccount.addEventListener('click', () => {
-  loginForm.style.display = 'none';
-  createAccountForm.style.display = 'block';
-  document.querySelector('h2').textContent = 'Criar Conta';  // Atualizar título do modal
-});
-
-// Mostrar o formulário de login
-showLogin.addEventListener('click', () => {
-  createAccountForm.style.display = 'none';
-  loginForm.style.display = 'block';
-  document.querySelector('h2').textContent = 'Entrar';  // Atualizar título do modal
-});
-
-// Fechar o modal
-const closeModal = document.getElementById('closeModal');
-closeModal.addEventListener('click', () => {
-  document.getElementById('loginModal').classList.remove('show');
+  // Função para editar a foto de perfil
+  profileUpload.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        userAvatar.src = e.target.result; // Atualiza a foto do perfil
+        const user = JSON.parse(localStorage.getItem('user'));
+        user.profilePicture = e.target.result;
+        localStorage.setItem('user', JSON.stringify(user));
+      };
+      reader.readAsDataURL(file); // Lê o arquivo como URL
+    }
+  });
 });
