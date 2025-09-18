@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L ' azur</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cardapio.css">
+</head>
+
+<body>
+<header>
+  <nav class="menu">
+    <button class="menu-btn" type="button">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <li><a href="conta.html">Minha conta</a></li>
+    </ul>
+
+    <!-- Carrinho (link direto) -->
+    <a class="cart-btn" href="carrinho.html" aria-label="Abrir carrinho">
+      <img src="img/carrinho.png" alt="Carrinho">
+    </a>
+  </nav>
+</header>
+
+<!-- Drawer / Menu lateral (Hamburguer) -->
+<div id="nav-overlay" aria-hidden="true">
+  <nav class="nav-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="nav-panel-header">
+      <h2 id="drawer-title">Menu</h2>
+      <button class="nav-close" type="button" aria-label="Fechar">×</button>
+    </div>
+
+    <ul class="nav-list">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="cardapio.html">Cardápio</a></li>
+      <!-- O link "Sobre nós" só vai aparecer no menu lateral -->
+      <li><a href="javascript:void(0);" id="sobre-link">Sobre nós</a></li>
+      <li><a href="conta.html">Minha conta</a></li>
+    </ul>
+
+    <!-- Coloca o conteúdo "Sobre nós" aqui, fora da lista de navegação -->
+    <div class="submenu-text" id="sobre-text">
+      Na L’Azur Cacau, acreditamos que cada doce é mais do que sabor — é uma experiência.  
+      Produzimos criações artesanais com ingredientes selecionados, unindo sofisticação, textura
+      irresistível e um toque de carinho em cada detalhe.
+
+      Nossa essência combina o brilho do dourado, a delicadeza do azul e a intensidade do cacau, criando
+      um universo onde o sabor encontra a elegância.
+
+      Seja para presentear, celebrar ou transformar um momento simples em inesquecível, nossos doces foram feitos
+      para encantar o olhar e apaixonar o paladar.
+    </div>
+
+    <div class="nav-panel-brand">
+      <img src="img/logo.webp" alt="L'Azur" />
+    </div>
+  </nav>
+</div>
+ <!-- Título -->
+  <h1 class="titulo">Cardápio</h1>
+<!-- Cardápio -->
+<div class="cardapio-container">
+  <div class="grid-cardapio">
+    <div id="produtos-lista" class="produtos-lista"></div> <!-- Onde os produtos serão exibidos -->
+  </div>
+</div>
+
+  <script src="cardapio.js"></script>
+</body>
+</html>

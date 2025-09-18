@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>L ' Azur</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="conta.css">
+</head>
+<body>
+  <header>
+    <nav class="menu">
+      <button class="menu-btn" type="button">☰</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="cardapio.html">Cardápio</a></li>
+        <li><a href="conta.html">Minha conta</a></li>
+      </ul>
+
+      <!-- Carrinho (link direto) -->
+      <a class="cart-btn" href="carrinho.html" aria-label="Abrir carrinho">
+        <img src="img/carrinho.png" alt="Carrinho">
+      </a>
+    </nav>
+  </header>
+
+  <!-- Modal de Edição de Perfil -->
+<div id="editProfileModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeEditProfileModal">&times;</span>
+    
+    <!-- Título Modal -->
+    <div class="modal-header">
+      <h2>Editar Perfil</h2>
+    </div>
+
+    <!-- Formulário de Edição -->
+    <div id="editProfileForm">
+      <label for="editName">Nome Completo</label>
+      <input type="text" id="editName" name="editName" required>
+
+      <label for="editEmail">E-mail</label>
+      <input type="email" id="editEmail" name="editEmail" required>
+
+      <label for="editPassword">Senha</label>
+      <input type="password" id="editPassword" name="editPassword" required>
+
+      <button type="submit" class="btn" id="saveProfileBtn">Salvar</button>
+    </div>
+  </div>
+</div>
+
+  <!-- Balão de Sucesso (Conta criada com sucesso) -->
+  <div id="sucessoBalão" class="balao-sucesso">
+    Conta criada com sucesso!
+  </div>
+
+  <!-- Balão de Logout (Você saiu da sua conta) -->
+  <div id="logoutBalão" class="balao-sucesso">
+    Você saiu da sua conta!
+  </div>
+
+  <!-- Balão de Erro (E-mail ou senha inválidos) -->
+  <div id="erroBalão" class="balao-sucesso" style="background-color: #dc3545;">
+    E-mail ou senha inválidos!
+  </div>
+
+  <!-- Modal de Confirmação de Logout -->
+  <div id="confirmLogoutModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeLogoutModal">&times;</span>
+      <div class="modal-header">
+        <h2>Você tem certeza que deseja sair?</h2>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmLogoutBtn" class="btn">Sair</button>
+        <button id="cancelLogoutBtn" class="btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+
+      <!-- Título Modal -->
+      <div class="modal-header">
+        <img src="img/logo.webp" alt="L'Azur Logo" class="logo">
+      </div>
+
+      <!-- Formulário de Login -->
+      <div id="loginForm">
+        <form id="formLogin">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" required>
+
+          <button type="submit" class="btn">ENTRAR</button>
+        </form>
+
+        <div class="modal-footer">
+          <a href="javascript:void(0);" id="showCreateAccount">Criar conta</a>
+          <a href="javascript:void(0);" id="showForgotPassword">Esqueci a senha</a>
+        </div>
+      </div>
+
+      <!-- Formulário de Criar Conta -->
+      <div id="createAccountForm" style="display: none;">
+        <form id="formCreateAccount">
+          <label for="newName">Nome completo</label>
+          <input type="text" id="newName" name="newName" required>
+
+          <label for="newEmail">E-mail</label>
+          <input type="email" id="newEmail" name="newEmail" required>
+
+          <label for="newPassword">Senha</label>
+          <input type="password" id="newPassword" name="newPassword" required>
+
+          <button type="submit" class="btn">CRIAR CONTA</button>
+        </form>
+
+        <div class="modal-footer">
+          <a href="javascript:void(0);" id="showLogin">Já tem conta? Entrar</a>
+        </div>
+      </div>
+
+      <!-- Formulário de Esqueci a Senha -->
+      <div id="forgotPasswordForm" style="display: none;">
+        <form id="formForgotPassword">
+          <label for="forgotEmail">Digite seu e-mail para recuperar a senha</label>
+          <input type="email" id="forgotEmail" name="forgotEmail" required>
+
+          <button type="submit" class="btn">ENVIAR</button>
+        </form>
+
+        <div class="modal-footer">
+          <a href="javascript:void(0);" id="showLoginFromForgot">Voltar para Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card do perfil -->
+  <main class="w-full max-w-md px-1 mt-32" id="mainContent">
+    <div class="relative bg-[color:var(--cream)] rounded-3xl pt-8 pb-10 px-8 shadow-xl" id="profileCard">
+
+      <!-- Avatar com ícone "+" -->
+      <div class="absolute -top-20 left-1/2 transform -translate-x-1/2" id="profileImage">
+        <img src="/Projeto dick/img/camisa-preta.webp" alt="Icon de Usuario" class="w-28 h-28 rounded-full object-cover" id="userAvatar">
+        <!-- Ícone de "+" para editar a foto -->
+        <label for="profileUpload" class="absolute bottom-0 right-0 bg-[color:var(--navy)] text-[color:var(--gold)] rounded-full p-2 cursor-pointer">
+          <span class="text-xl">+</span>
+        </label>
+        <input type="file" id="profileUpload" accept="image/*" style="display: none;" />
+      </div>
+
+      <!-- Conteúdo do card -->
+      <div class="text-center">
+        <h1 class="text-4xl text-[color:var(--navy)]" id="userName">Usuário</h1>
+        <p class="text-xs text-gray-600 mt-1 break-all" id="userEmail">piclisambulante@gmail.com</p>
+
+        <!-- Botão Editar Perfil -->
+        <button id="editProfileBtn" class="mt-2 bg-[color:var(--navy)] text-[color:var(--gold)] px-12 py-1 rounded-full shadow-sm text-sm">
+        Editar Perfil
+        </button>
+
+        <!-- Botão de Logout -->
+        <button class="logout mt-4 border-2 border-red-600 text-red-600 px-12 py-1 rounded-full shadow-sm text-sm" id="logoutBtn">
+          Sair
+        </button>
+      </div>
+
+      <!-- Histórico de compras -->
+      <div class="mt-6" id="purchaseHistory">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base text-[color:var(--navy)]">Histórico de compras</h2>
+          <a href="#" class="text-xs text-gray-600 hover:underline">Ver tudo</a>
+        </div>
+
+        <!-- Galeria -->
+        <div class="mt-3 grid grid-cols-3 gap-1" id="productGallery">
+          <!-- Produtos aqui -->
+        </div>
+
+        <div class="mt-3 grid grid-cols-3 gap-1" id="purchaseItems">
+          <p>Você ainda não fez compras.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão de Login (oculto inicialmente) -->
+    <div class="text-center" id="loginButton" style="display:none;">
+      <button class="mt-6 bg-[color:var(--navy)] text-[color:var(--gold)] px-20 py-1 rounded-full shadow-sm text-sm" id="loginBtn">
+        Login
+      </button>
+    </div>
+
+  </main>
+
+  <script src="conta.js"></script>
+
+</body>
+</html>
