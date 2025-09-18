@@ -1,0 +1,436 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+/* HEADER */
+header{background:var(--blue-900);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.menu{
+  max-width:1060px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;
+}
+.menu-btn,.cart-btn{
+  border:0;background:transparent;color:#fff;width:32px;height:32px;
+  display:grid;place-items:center;cursor:pointer;font-size:16px;
+}
+.cart-btn img{width:16px;height:16px}
+.nav-links{display:flex;gap:14px;list-style:none;margin:0;padding:0}
+.nav-links a{color:#fff;text-decoration:none;opacity:.9;font-size:.85rem}
+.nav-links a:hover{opacity:1;color:var(--gold)}
+
+/* ===== Drawer (menu lateral) ===== */
+#nav-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease, background .35s ease;
+  z-index: 1200;
+}
+#nav-overlay.open{
+  background: rgba(0,0,0,.55);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* painel lateral */
+.nav-panel{
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: min(88vw, 320px);
+  background:#101010;            /* preto elegante */
+  color:#f6f6f6;
+  box-shadow: 0 8px 26px rgba(0,0,0,.45);
+  transform: translateX(-100%);
+  transition: transform .28s ease;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 22px;
+}
+#nav-overlay.open .nav-panel{ transform: translateX(0); }
+
+/* topo do painel */
+.nav-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom: 12px;
+}
+.nav-panel-header h2{
+  margin:0; font:700 18px "Playfair Display", serif; color:#E0B15C;
+}
+.nav-close{
+  border:0; background:transparent; color:#fff; font-size:28px; line-height:1;
+  cursor:pointer; padding:2px 6px; border-radius:8px;
+}
+
+/* lista */
+.nav-list{ list-style:none; margin:8px 0 18px; padding:0; }
+.nav-list li{ margin:10px 0; }
+.nav-list a{
+  display:block; padding:10px 12px; border-radius:10px;
+  color:#fff; text-decoration:none; font-weight:500; letter-spacing:.2px;
+  transition: background .18s ease, transform .06s ease;
+  outline: none;
+}
+.nav-list a:hover{ background:rgba(255,255,255,.06); }
+.nav-list a:active{ transform: scale(.98); }
+
+/* marca no rodapé do painel */
+.nav-panel-brand{
+  margin-top:auto; display:grid; place-items:center; padding-top:18px;
+}
+.nav-panel-brand img{ width:84px; opacity:.95; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+
+/* acessibilidade – remove “caixa azul” nativa e põe foco custom */
+.menu .menu-btn:focus,
+.nav-close:focus,
+.nav-list a:focus{
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(224,177,92,.9);  /* dourado suave */
+  border-radius:10px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Merriweather', serif;
+  background: #0c1b2c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.menu-toggle span {
+  height: 3px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+}
+
+/* Itens centro (desktop) */
+.nav-center {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-center a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.nav-center a:hover,
+.nav-center a.active {
+  color: #E0B15C;
+}
+
+/* Carrinho */
+.cart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.cart-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.2s;
+}
+
+.cart-icon img:hover {
+  transform: scale(1.15);
+}
+
+/* --- MENU MOBILE OVERLAY --- */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  max-width: 280px;
+  height: 100%;
+  background: #142B45;
+  color: white;
+  padding: 2rem 1rem;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu.open {
+  left: 0;
+}
+
+.mobile-menu .close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  margin-top: 2rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.mobile-menu a {
+  color: white;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobile-menu a:hover,
+.mobile-menu a.active {
+  color: #E0B15C;
+}
+
+/* Esconde nav-center no mobile */
+@media (max-width: 768px) {
+  .nav-center {
+    display: none;
+  }
+}
+
+
+/* resto do teu css continua aqui ↓ */
+
+/* Container principal */
+.container {
+  width: 100%;
+  max-width: 420px;
+  background: #142B45;
+  color: white;
+  border-radius: 1.2rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  padding: 1rem;
+}
+
+/* Parte de cima */
+.top-section {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-img {
+  width: 110px;
+  height: 110px;
+  margin-top: 2rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+/* Botão Endereços */
+.btn-address {
+  margin-top: 0.5rem;
+  background: white;
+  color: #142B45;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.8rem;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn-address:hover {
+  background: #e8e8e8;
+  transform: scale(1.05);
+}
+
+/* Box infos */
+.box-info {
+  flex: 1;
+  background: rgba(161, 205, 255, 0.25);
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.box-info h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.box-info p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.btn-link {
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: #E0B15C;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.btn-link:hover {
+  color: #f2ca78;
+  transform: translateX(3px);
+}
+
+/* Botões extras */
+.extra-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.btn-secondary {
+  background: #E0B15C;
+  color: #142B45;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f2ca78;
+  transform: scale(1.03);
+}
+
+/* Botão sair */
+.btn-exit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.btn-exit {
+  background: #C41919;
+  color: white;
+  padding: 0.6rem 4rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: background 0.3s, transform 0.2s;
+  animation: pulse 2s infinite;
+}
+
+.btn-exit:hover {
+  background: #a51515;
+  transform: scale(1.05);
+}
+
+/* Ícones */
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: white;
+  color: black;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-box p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-modal {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #e5e5e5;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-modal:hover {
+  background: #d1d1d1;
+  transform: scale(1.05);
+}
+
+.btn-danger {
+  background: #f8d7da;
+  color: #a51515;
+}
+
+.btn-danger:hover {
+  background: #f1b0b7;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}

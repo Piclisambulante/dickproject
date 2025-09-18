@@ -1,0 +1,295 @@
+/* ===== Definições de cores principais ===== */
+:root {
+  --blue-900: #0e2a3a; /* Azul escuro */
+  --blue-800: #0f3449; /* Azul mais claro */
+  --blue-700: #102f44; /* Azul intermediário */
+  --cocoa-800: #5a3526; /* Cor de chocolate */
+  --gold: #d9b56b; /* Dourado */
+  --gold-200: #f3e3b3; /* Dourado mais claro */
+  --cream: #efe7dd; /* Creme */
+  --navy: #16202C; /* Azul escuro customizado */
+  --text-light: #f5f7fb; /* Texto claro */
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.35); /* Sombra suave */
+}
+
+/* ===== Header ===== */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:var(--blue-900);
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.menu{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 16px;
+}
+.menu-btn,
+.cart-btn{
+  border:0;
+  background-color:transparent;
+  color:var(--text);
+  width:36px;height:36px;
+  display:grid;place-items:center;
+}
+.menu-btn{font-size:18px;cursor:pointer;}
+.cart-btn img{width:18px;height:18px;cursor:pointer;}
+.nav-links{display:flex;gap:18px}
+.nav-links a{
+  font-size:.9rem;opacity:.9;transition:opacity .2s ease;
+}
+.nav-links a:hover{opacity:1;color:var(--gold)}
+
+/* ===== Drawer (menu lateral) ===== */
+#nav-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease, background .35s ease;
+  z-index: 1200;
+}
+#nav-overlay.open{
+  background: rgba(0,0,0,.55);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Estilos para o texto do submenu */
+.submenu-text {
+  display: none; /* Inicialmente o texto fica oculto */
+  opacity: 0; /* Inicia invisível */
+  transform: translateY(20px); /* Começa um pouco abaixo */
+  background-color: #1a1a1a;
+  padding: 15px;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  margin-top: 20px;
+  transition: all 0.6s ease; /* Animação de transição suave */
+}
+
+/* A classe 'active' faz o texto aparecer */
+.submenu-text.active {
+  display: block; /* Mostra o texto */
+  opacity: 1; /* Torna o texto visível */
+  transform: translateY(0); /* Move o texto para a posição original */
+}
+
+/* painel lateral */
+.nav-panel{
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: min(88vw, 320px);
+  background:#101010;            /* preto elegante */
+  color:#f6f6f6;
+  box-shadow: 0 8px 26px rgba(0,0,0,.45);
+  transform: translateX(-100%);
+  transition: transform .28s ease;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 22px;
+}
+#nav-overlay.open .nav-panel{ transform: translateX(0); }
+
+/* topo do painel */
+.nav-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom: 12px;
+}
+.nav-panel-header h2{
+  margin:0; font:700 18px "Playfair Display", serif; color:#E0B15C;
+}
+.nav-close{
+  border:0; background:transparent; color:#fff; font-size:28px; line-height:1;
+  cursor:pointer; padding:2px 6px; border-radius:8px;
+}
+
+/* lista */
+.nav-list{ list-style:none; margin:8px 0 18px; padding:0; }
+.nav-list li{ margin:10px 0; }
+.nav-list a{
+  display:block; padding:10px 12px; border-radius:10px;
+  color:#fff; text-decoration:none; font-weight:500; letter-spacing:.2px;
+  transition: background .18s ease, transform .06s ease;
+  outline: none;
+}
+.nav-list a:hover{ background:rgba(255,255,255,.06); }
+.nav-list a:active{ transform: scale(.98); }
+
+/* marca no rodapé do painel */
+.nav-panel-brand{
+  margin-top:auto; display:grid; place-items:center; padding-top:18px;
+}
+.nav-panel-brand img{ width:84px; opacity:.95; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+
+/* acessibilidade – remove “caixa azul” nativa e põe foco custom */
+.menu .menu-btn:focus,
+.nav-close:focus,
+.nav-list a:focus{
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(224,177,92,.9);  /* dourado suave */
+  border-radius:10px;
+}
+
+
+/* ===== Body ===== */
+body {
+  font-family: "Merriweather", serif, system-ui, -apple-system, "Segoe UI";
+  background-color: var(--blue-900); /* Fundo escuro */
+  color: var(--text-light); /* Texto claro */
+  margin: 0;
+  padding: 0;
+}
+/* ===== Perfil do usuário ===== */
+.main-profile {
+  background-color: var(--cream); /* Fundo creme para o card */
+  color: var(--navy); /* Novo tom de azul escuro */
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin: 40px auto;
+  border-radius: 20px;
+  box-shadow: var(--shadow); /* Sombra suave */
+  text-align: center;
+  position: relative;
+}
+
+.profile-header {
+  margin-top: -60px; /* Ajusta a posição da foto para que fique centralizada */
+}
+
+.profile-header img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--cream); /* Borda de destaque, mesma cor do fundo */
+  box-shadow: var(--shadow); /* Sombra da foto */
+}
+
+.profile-header h1 {
+  font-size: 24px;
+  color: var(--navy); /* Azul escuro para o nome */
+  margin-top: 10px;
+}
+
+.profile-header p {
+  font-size: 16px;
+  color: var(--blue-700); /* Azul intermediário para o e-mail */
+}
+
+.profile-header button {
+  background-color: var(--navy); /* Azul escuro para o botão */
+  color: var(--gold); /* Dourado para o texto do botão */
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.profile-header button:hover {
+  background-color: var(--blue-800); /* Azul mais claro para o hover */
+  transition: background-color 0.3s ease;
+}
+
+/* ===== Histórico de Compras ===== */
+.history-card {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  background-color: var(--cream); /* Fundo creme */
+  color: var(--navy); /* Texto azul escuro */
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.history-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.history-info h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.history-info p {
+  font-size: 14px;
+  color: var(--blue-700);
+}
+
+.history-info .status {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.history-info .price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.history-info .date {
+  font-size: 14px;
+  color: var(--blue-700);
+}
+
+/* ===== Botões ===== */
+.button {
+  background-color: var(--navy);
+  color: var(--gold);
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--blue-800);
+  transition: background-color 0.3s ease;
+}
+
+a {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--gold);
+}
+/* ===== Glow Bonitinho (remove quadrado azul) ===== */
+button:focus,
+button:active,
+.cart-btn:focus,
+.cart-btn:active,
+.menu-btn:focus,
+.menu-btn:active,
+.add-btn:focus,
+.add-btn:active,
+a:focus,
+a:active,
+input:focus,
+input:active {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(217, 181, 107, 0.5);
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease;
+}

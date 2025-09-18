@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>L ' Azur</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="conta.css">
+</head>
+<body> 
+<header>
+  <nav class="menu">
+    <button class="menu-btn" type="button">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Incio</a></li>
+      <li><a href="cardapio.html">Cardapio</a></li>
+      <li><a href="conta.html">Minha conta</a></li>
+    </ul>
+
+    <!-- Carrinho (link direto) -->
+    <a class="cart-btn" href="carrinho.html" aria-label="Abrir carrinho">
+      <img src="img/carrinho.png" alt="Carrinho">
+    </a>
+  </nav>
+</header>
+
+<!-- Drawer / Menu lateral -->
+<div id="nav-overlay" aria-hidden="true">
+  <nav class="nav-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="nav-panel-header">
+      <h2 id="drawer-title">Menu</h2>
+      <button class="nav-close" type="button" aria-label="Fechar">×</button>
+    </div>
+
+    <ul class="nav-list">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="cardapio.html">cardapio</a></li>
+      <li><a href="sobre.html">Sobre nós</a></li>
+      <li><a href="conta.html">Minha conta</a></li>
+    </ul>
+
+    <div class="nav-panel-brand">
+      <img src="img/logo.webp" alt="L'Azur" />
+    </div>
+  </nav>
+</div>
+
+<!-- Card do perfil -->
+<main class="w-full max-w-md px-1 mt-32">
+  <div class="relative bg-[color:var(--cream)] rounded-3xl pt-8 pb-10 px-8 shadow-xl">
+
+    <!-- Avatar -->
+    <div class="absolute -top-20 left-1/2 transform -translate-x-1/2">
+      <img src="img/user.jpg" alt="Icon de Usuario" class="w-28 h-28 rounded-full object-cover">
+    </div>
+
+    <!-- Conteúdo do card -->
+    <div class="text-center">
+      <h1 class="text-4xl text-[color:var(--navy)]">Usuário</h1>
+      <p class="text-xs text-gray-600 mt-1 break-all">piclisambulante@gmail.com</p>
+      <button class="mt-6 bg-[color:var(--navy)] text-[color:var(--gold)] px-20 py-1 rounded-full shadow">
+        Editar Perfil
+      </button>
+    </div>
+
+    <!-- Histórico de compras -->
+    <div class="mt-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base text-[color:var(--navy)]">Histórico de compras</h2>
+        <a href="#" class="text-xs text-gray-600 hover:underline">Ver tudo</a>
+    </div>
+
+      <!-- Galeria -->
+      <div class="mt-3 grid grid-cols-3 gap-1">
+        <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+        <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+        <div class="relative">
+          <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+          <div class="absolute -right-1 -bottom-1 bg-[color:var(--navy)] text-[color:var(--cream)] text-[10px] px-1 rounded-full">+1</div>
+        </div>
+      </div>
+
+      <div class="mt-3 grid grid-cols-3 gap-1">
+        <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+        <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+        <div class="relative">
+          <img src="img/bolodecenoura.webp" class="w-12 h-12 rounded-full object-cover shadow">
+          <div class="absolute -right-1 -bottom-1 bg-[color:var(--navy)] text-[color:var(--cream)] text-[10px] px-1 rounded-full">+1</div>
+        </div>
+      </div>
+
+      <!-- Itens detalhados -->
+      <div class="mt-4 text-xs text-gray-700 space-y-2">
+        <p>Cupcake - morango • data: 01/05/2025 • Situação: Em preparo • Método: Pix • Valor: R$37,00</p>
+        <p>Brownie - chocolate • data: 23/04/2025 • Situação: Entregue • Método: Pix • Valor: R$57,00</p>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="conta.js"></script>
+</body>
+</html>

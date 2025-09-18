@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L ' Azur - Perfil</title>
+  <link rel="stylesheet" href="editarperfil.css" />
+</head>
+
+<header>
+  <header>
+  <nav class="menu">
+    <button class="menu-btn" type="button">☰</button>
+    <ul class="nav-links">
+      <li><a href="#">Incio</a></li>
+      <li><a href="#">Contato</a></li>
+      <li><a href="#">Minha conta</a></li>
+    </ul>
+
+    <!-- Carrinho (link direto) -->
+    <a class="cart-btn" href="carrinho.html" aria-label="Abrir carrinho">
+      <img src="img/carrinho.png" alt="Carrinho">
+    </a>
+  </nav>
+</header>
+
+<!-- Drawer / Menu lateral -->
+<div id="nav-overlay" aria-hidden="true">
+  <nav class="nav-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div class="nav-panel-header">
+      <h2 id="drawer-title">Menu</h2>
+      <button class="nav-close" type="button" aria-label="Fechar">×</button>
+    </div>
+
+    <ul class="nav-list">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="faq.html">Perguntas frequentes</a></li>
+      <li><a href="cardapio.html">cardapio</a></li>
+      <li><a href="sobre.html">Sobre nós</a></li>
+      <li><a href="pedidos.html">Pedidos</a></li>
+      <li><a href="historico.html">Histórico de compras</a></li>
+      <li><a href="conta.html">Minha conta</a></li>
+    </ul>
+
+</div> +
+</header>
+
+<body>
+  <!-- Container principal -->
+  <div class="container">
+
+    <!-- Parte superior: foto + botão endereços -->
+    <div class="top-section">
+      
+      <!-- Foto usuário -->
+      <div class="profile">
+        <img src="img/bolodecenoura.webp" alt="Foto usuário" class="profile-img">
+        
+        <!-- Botão endereços -->
+        <button class="btn-address">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 9.75l9-7.5 9 7.5M4.5 10.5v9a.75.75 0 00.75.75H9v-6h6v6h3.75a.75.75 0 00.75-.75v-9" />
+          </svg>
+          Endereços
+        </button>
+      </div>
+
+      <!-- Box com nome e infos -->
+      <div class="box-info">
+        <h2>Mia Khalifa</h2>
+        <p>miakhalifa696969@gmail.com</p>
+        <p>Rua trombudó central, 260</p>
+        <p>Cep: 89041-480</p>
+        
+        <!-- Redefinir senha -->
+        <button class="btn-link">Redefinir Senha</button>
+      </div>
+    </div>
+
+    <!-- Botões extras -->
+    <div class="extra-actions">
+      <button class="btn-secondary">Editar Perfil</button>
+      <button class="btn-secondary">Meus Pedidos</button>
+      <button class="btn-secondary">Métodos de Pagamento</button>
+    </div>
+
+    <!-- Botão sair -->
+    <div class="btn-exit-container">
+      <button id="openModal" class="btn-exit">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m9 0l-3-3m3 3l-3 3" />
+        </svg>
+        Sair da Conta
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <p>Deseja sair da conta?</p>
+      <div class="modal-actions">
+        <button id="closeModal" class="btn-modal">Voltar</button>
+        <a href="logout.html" class="btn-modal btn-danger">Sair</a>
+      </div>
+    </div>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
