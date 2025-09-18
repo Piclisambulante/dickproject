@@ -7,6 +7,7 @@ function parseBRL(str) {
     .replace(/\./g, '')
     .replace(',', '.')) || 0;
 }
+
 function formatBRL(n) {
   return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
@@ -40,8 +41,6 @@ function formatBRL(n) {
   `;
   document.body.appendChild(overlay);
 })();
-
-
 
 const drawer = {
   overlay: document.getElementById('nav-overlay'),
@@ -83,23 +82,23 @@ const modalQty   = document.getElementById('modal-qty');
 const addBtn     = document.getElementById('add-to-cart');
 const closeBtn   = document.querySelector('.modal-close');
 
-// calcula origem do pop (transform-origin) baseada no clique/card
-function setModalOriginFrom(el, evt){
-  try{
+// Calcula a origem do pop (transform-origin) baseada no clique/card
+function setModalOriginFrom(el, evt) {
+  try {
     const rect = el.getBoundingClientRect();
-    const cx = evt ? evt.clientX : rect.left + rect.width/2;
-    const cy = evt ? evt.clientY : rect.top  + rect.height/2;
+    const cx = evt ? evt.clientX : rect.left + rect.width / 2;
+    const cy = evt ? evt.clientY : rect.top + rect.height / 2;
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     document.documentElement.style.setProperty('--mx', Math.min(Math.max(cx / vw * 100, 0), 100).toFixed(2) + '%');
     document.documentElement.style.setProperty('--my', Math.min(Math.max(cy / vh * 100, 0), 100).toFixed(2) + '%');
-  }catch(e){}
+  } catch (e) {}
 }
 
-// força reflow
+// Força o reflow para animação
 const forceReflow = (el) => { void el.offsetWidth; };
 
-function openModal(img, title, priceLabel, originEl=null, evt=null) {
+function openModal(img, title, priceLabel, originEl = null, evt = null) {
   modalImg.src = img;
   modalImg.alt = title;
   modalTitle.textContent = title;
@@ -108,21 +107,25 @@ function openModal(img, title, priceLabel, originEl=null, evt=null) {
 
   if (originEl) setModalOriginFrom(originEl, evt);
 
-  // limpa estados e mostra overlay
+  // Limpa estados e mostra overlay
   modal.classList.remove('is-closing', 'is-opening');
   modal.classList.add('open');
   document.body.classList.add('noscroll');
 
   const card = modal.querySelector('.modal-card');
 
-  // reflow + aciona animação
+  // Aciona animação
   forceReflow(card);
   modal.classList.add('is-opening');
 
-  // fallback se animationend não vier
   const done = () => modal.classList.remove('is-opening');
   const t = setTimeout(done, 600);
-  card.addEventListener('animationend', (e) => { if (e.target === card){ clearTimeout(t); done(); } }, { once:true });
+  card.addEventListener('animationend', (e) => {
+    if (e.target === card) {
+      clearTimeout(t);
+      done();
+    }
+  }, { once: true });
 }
 
 function closeModal() {
@@ -138,22 +141,23 @@ function closeModal() {
     modal.classList.remove('open', 'is-closing');
     document.body.classList.remove('noscroll');
   };
+
   const t = setTimeout(finish, 450);
-  card.addEventListener('animationend', (e) => { if (e.target === card){ clearTimeout(t); finish(); } }, { once:true });
+  card.addEventListener('animationend', (e) => {
+    if (e.target === card) {
+      clearTimeout(t);
+      finish();
+    }
+  }, { once: true });
 }
 
-// saídas garantidas
+// Ações de clique para fechar o modal
 closeBtn?.addEventListener('click', closeModal);
-modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-/* quantidade na pílula */
-document.querySelectorAll('.qty-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const dir = btn.dataset.op;
-    const cur = parseInt(modalQty.value || '1', 10);
-    modalQty.value = dir === 'inc' ? (cur + 1) : Math.max(1, cur - 1);
-  });
+modal?.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
 });
 
 /* =========================
@@ -162,9 +166,11 @@ document.querySelectorAll('.qty-btn').forEach((btn) => {
 function getCart() {
   return JSON.parse(localStorage.getItem('cart') || '[]');
 }
+
 function setCart(c) {
   localStorage.setItem('cart', JSON.stringify(c));
 }
+
 function addToCart({ title, flavor = '', img, priceNumber, qty = 1 }) {
   const cart = getCart();
   const i = cart.findIndex(p => p.title === title && (p.flavor || '') === (flavor || ''));
@@ -176,155 +182,97 @@ function addToCart({ title, flavor = '', img, priceNumber, qty = 1 }) {
   setCart(cart);
 }
 
-/* salvar do modal fecha também */
-addBtn?.addEventListener('click', () => {
-  const title = modalTitle.textContent.trim();
-  const priceNumber = parseBRL(modalPrice.textContent);
-  const img = modalImg.src;
-  const qty = Math.max(1, parseInt(modalQty.value || '1', 10));
+document.addEventListener('DOMContentLoaded', function () {
 
-  addToCart({ title, img, priceNumber, qty });
-  closeModal();
-});
+  // Seleção dos elementos
+  const loginBtn = document.getElementById('loginBtn');
+  const loginModal = document.getElementById('loginModal');
+  const closeModalBtn = document.getElementById('closeModal');
+  const profileCard = document.getElementById('profileCard');
+  const loginButton = document.getElementById('loginButton');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
 
-/* =========================
-   Abrir modal a partir dos cards (com origem do clique)
-========================= */
-const imperdiveisCards = document.querySelectorAll('.imperdiveis .card');
-const sugestoesCards   = document.querySelectorAll('.sugestoes .carousel-item');
-
-function extractFromCard(card) {
-  const img = card.querySelector('img')?.src || '';
-  let title = '';
-  let priceLabel = '';
-
-  if (card.classList.contains('card')) {
-    title = card.querySelector('h3')?.textContent.trim() || '';
-    priceLabel = card.querySelector('.card-text p')?.textContent.trim() ||
-                 card.querySelector('p')?.textContent.trim() || '';
-  } else if (card.classList.contains('carousel-item')) {
-    const ps = card.querySelectorAll('p');
-    title = ps[0]?.textContent.trim() || '';
-    priceLabel = ps[1]?.textContent.trim() || '';
-  } else {
-    const ps = card.querySelectorAll('p');
-    title = card.querySelector('h3')?.textContent.trim() || ps[0]?.textContent.trim() || '';
-    priceLabel = (ps.length > 1 ? ps[1] : ps[0])?.textContent.trim() || '';
-  }
-  return { img, title, priceLabel };
-}
-
-imperdiveisCards.forEach(card => {
-  card.addEventListener('click', (e) => {
-    const { img, title, priceLabel } = extractFromCard(card);
-    openModal(img, title, priceLabel, card, e); // origem do pop = card clicado
+  // Exibir o modal de login
+  loginBtn.addEventListener('click', function () {
+    loginModal.style.display = 'block';
+    profileCard.style.display = 'none';  // Esconde o perfil enquanto o login está aberto
+    loginButton.style.display = 'none';  // Esconde o botão de login
   });
-});
-sugestoesCards.forEach(card => {
-  card.addEventListener('click', (e) => {
-    const { img, title, priceLabel } = extractFromCard(card);
-    openModal(img, title, priceLabel, card, e); // origem do pop = card clicado
-  });
-});
 
-/* =========================
-   Ripple effect
-========================= */
-function attachRipple(el) {
-  const computed = getComputedStyle(el);
-  if (computed.position === 'static') el.style.position = 'relative';
-  el.style.overflow = 'hidden';
-  el.addEventListener('click', function (e) {
-    const r = document.createElement('span');
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    r.style.width = r.style.height = size + 'px';
-    r.style.position = 'absolute';
-    r.style.borderRadius = '50%';
-    r.style.left = (e.clientX - rect.left - size / 2) + 'px';
-    r.style.top  = (e.clientY - rect.top  - size / 2) + 'px';
-    r.style.background = 'rgba(224, 177, 92, 0.25)';
-    r.style.transform = 'scale(0)';
-    r.style.animation = 'ripple .6s ease-out forwards';
-    this.appendChild(r);
-    r.addEventListener('animationend', () => r.remove());
+  // Fechar o modal de login ao clicar no 'x'
+  closeModalBtn.addEventListener('click', function () {
+    loginModal.style.display = 'none';
+    profileCard.style.display = 'block';  // Exibe o perfil novamente
+    loginButton.style.display = 'none';  // Esconde o botão de login
   });
-}
-document.querySelectorAll('.menu-btn, .cart-btn, .add-btn, .nav-list a, .qty-btn').forEach(attachRipple);
 
-(function ensureRippleKeyframes() {
-  const id = 'ripple-keyframes-style';
-  if (document.getElementById(id)) return;
-  const style = document.createElement('style');
-  style.id = id;
-  style.textContent = `
-    @keyframes ripple {
-      to { transform: scale(2.4); opacity: 0; }
+  // Função para simular o login
+  const loginForm = document.getElementById('loginForm');
+  loginForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (email && password) {
+      // Simula login (você pode substituir com autenticação real)
+      console.log('Login realizado com sucesso!');
+
+      // Atualiza as informações do perfil com os dados de login
+      userName.innerText = 'Usuário';  // Altere conforme o nome do usuário real
+      userEmail.innerText = email;  // Altere para o e-mail fornecido durante o login
+
+      // Fecha o modal de login
+      loginModal.style.display = 'none';
+
+      // Exibe o perfil e o botão de logout
+      profileCard.style.display = 'block';
+      loginButton.style.display = 'none';  // Esconde o botão de login quando já estiver logado
+    } else {
+      alert('Por favor, preencha todos os campos!');
     }
-  `;
-  document.head.appendChild(style);
-})();
-
-/* ============ Renderizar Histórico ============ */
-function renderHistorico() {
-  const tbody = document.querySelector('.historico-items tbody');
-  tbody.innerHTML = '';
-  const historico = JSON.parse(localStorage.getItem('historico') || '[]');
-
-  if (!historico.length) {
-    tbody.innerHTML = `<tr id="historico-empty-row"><td colspan="3" style="text-align:center; padding:18px 8px; color:#666;">
-      Você ainda não fez nenhuma compra.
-    </td></tr>`;
-    return;
-  }
-
-  historico.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.className = 'item-row';
-
-    tr.innerHTML = `
-      <td>
-        <div class="product-info">
-          <img src="${item.img}" alt="${item.title} ${item.flavor||''}">
-          <div class="product-text">
-            <span class="product-name">${item.title}</span>
-            ${item.flavor ? `<span class="product-flavor">${item.flavor}</span>` : ''}
-          </div>
-        </div>
-      </td>
-      <td style="text-align:center;">
-        <span class="qty">${item.qty}</span>
-      </td>
-      <td style="text-align:right;" class="line-total">${formatBRL(item.price * item.qty)}</td>
-    `;
-
-    tbody.appendChild(tr);
   });
-}
 
-// Obtém o link de "Sobre nós" e o conteúdo de texto
-const sobreLink = document.getElementById('sobre-link');
-const sobreText = document.getElementById('sobre-text');
-const menuCloseBtn = document.querySelector('.nav-close'); // Botão de fechar o menu
-const navOverlay = document.getElementById('nav-overlay'); // Overlay que indica que o menu está aberto
+  // Função de Logout
+  logoutBtn.addEventListener('click', function () {
+    // Simula logout (aqui você pode adicionar a lógica real de logout)
+    console.log('Logout realizado!');
 
-// Adiciona um evento de clique ao link "Sobre nós" para exibir/ocultar o texto
-sobreLink.addEventListener('click', (event) => {
-  event.preventDefault();  // Impede o link de redirecionar
-  sobreText.classList.toggle('active');  // Alterna a visibilidade do texto
+    // Esconde o perfil e exibe o botão de login
+    profileCard.style.display = 'none';
+    loginButton.style.display = 'block';  // Exibe o botão de login novamente
+
+    // Limpar os dados do usuário
+    userName.innerText = '';
+    userEmail.innerText = '';
+  });
+    
+
+});
+// Acessar os elementos
+const showCreateAccount = document.getElementById('showCreateAccount');
+const showLogin = document.getElementById('showLogin');
+const loginForm = document.getElementById('loginForm');
+const createAccountForm = document.getElementById('createAccountForm');
+
+// Mostrar o formulário de criar conta
+showCreateAccount.addEventListener('click', () => {
+  loginForm.style.display = 'none';
+  createAccountForm.style.display = 'block';
+  document.querySelector('h2').textContent = 'Criar Conta';  // Atualizar título do modal
 });
 
-// Função para fechar o texto quando o menu for fechado
-menuCloseBtn.addEventListener('click', () => {
-  sobreText.classList.remove('active');  // Remove a classe 'active' para ocultar o texto
-  navOverlay.classList.remove('open'); // Fecha o menu (oculta o overlay)
+// Mostrar o formulário de login
+showLogin.addEventListener('click', () => {
+  createAccountForm.style.display = 'none';
+  loginForm.style.display = 'block';
+  document.querySelector('h2').textContent = 'Entrar';  // Atualizar título do modal
 });
 
-// Função para abrir o menu (quando o botão ☰ for clicado)
-document.querySelector('.menu-btn').addEventListener('click', () => {
-  navOverlay.classList.add('open');  // Exibe o menu (adiciona o overlay)
+// Fechar o modal
+const closeModal = document.getElementById('closeModal');
+closeModal.addEventListener('click', () => {
+  document.getElementById('loginModal').classList.remove('show');
 });
-
-
-/* ============ Init ============ */
-document.addEventListener('DOMContentLoaded', renderHistorico);
