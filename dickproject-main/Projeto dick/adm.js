@@ -152,4 +152,3 @@ function excluirProduto(index) {
 
 // Inicializa lista se for ADM
 renderProdutos();
-
