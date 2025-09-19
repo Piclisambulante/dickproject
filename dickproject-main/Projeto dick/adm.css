@@ -278,6 +278,29 @@ form button:hover {
   overflow: hidden;
 }
 
+.produto .preco {
+  margin-bottom: 20px; /* Espaço entre o preço e o botão de excluir */
+  font-size: 1rem;
+  color: #d9a95b; /* Cor do preço (dourado) */
+}
+
+.produtos-lista .produto button {
+  position: absolute;
+  bottom: 5px; /* Coloca o botão na parte inferior do produto */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px; /* Dá um espaço entre o texto e o botão */
+}
+
+/* Ajuste do layout para o conteúdo da .produto */
+.produto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  height: 300px; /* Ajusta a altura do card para garantir que haja espaço */
+}
+
 .produtos-lista img {
   width: 100%; /* A imagem ocupa toda a largura do card */
   aspect-ratio: 1/1; /* mantém formato quadrado */
@@ -290,7 +313,7 @@ form button:hover {
   color: white; /* Texto branco */
   border: none; /* Remover borda padrão */
   border-radius: 5px; /* Cantos arredondados */
-  padding: 0.5rem 1rem; /* Aumentei o padding para melhorar a área clicável */
+  padding: 0.3rem 1rem; /* Aumentei o padding para melhorar a área clicável */
   font-size: 1rem;
   cursor: pointer; /* Apontador de cursor para indicar que é clicável */
   transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
