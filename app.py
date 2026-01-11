@@ -1,6 +1,6 @@
 # app.py — runner universal
 import os
-# Clean the terminal
+# Clear the terminal
 os.system("cls")
 
 try:
